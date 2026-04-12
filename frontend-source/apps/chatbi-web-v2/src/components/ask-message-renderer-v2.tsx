@@ -64,8 +64,8 @@ export function UserMessageCardV2() {
   const text = getTextParts(message.content as MessagePart[]).map(part => part.text).join('\n').trim()
 
   return (
-    <article id="onyx-human-message" className="flex w-full flex-col justify-end relative">
-      <div className="flex justify-end">
+    <article id="onyx-human-message" className="onyx-chat-message-frame onyx-chat-message-frame-user flex w-full flex-col justify-end relative">
+      <div className="onyx-chat-message-user-column flex justify-end">
         <div className="md:max-w-[37.5rem]">
           <OnyxDonorCardV2
             className="onyx-native-donor-user-message-card max-w-[30rem] md:max-w-[37.5rem]"
@@ -123,7 +123,7 @@ export function AssistantMessageCardV2() {
   const finalAnswerRef = useRef<HTMLDivElement>(null)
 
   return (
-    <div className="flex flex-col gap-3" data-testid="onyx-ai-message">
+    <div className="onyx-chat-message-frame onyx-chat-message-frame-assistant flex w-full flex-col gap-3" data-testid="onyx-ai-message">
       <div className="onyx-donor-message-shell flex flex-col gap-3" data-testid="onyx-donor-message-shell">
         <article
           className={

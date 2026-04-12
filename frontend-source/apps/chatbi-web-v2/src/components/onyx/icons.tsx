@@ -85,6 +85,62 @@ export function SvgSidebarV2({ size, ...props }: OnyxIconProps) {
   )
 }
 
+export function SvgPanelLeftV2({ size, ...props }: OnyxIconProps) {
+  return (
+    <svg
+      fill="none"
+      height={size}
+      stroke="currentColor"
+      viewBox="0 0 16 16"
+      width={size}
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <rect height="11" rx="1.5" strokeWidth={1.5} width="11" x="2.5" y="2.5" />
+      <path d="M6.5 2.5V13.5" strokeLinecap="round" strokeWidth={1.5} />
+    </svg>
+  )
+}
+
+export function SvgCraftBoxV2({ size, ...props }: OnyxIconProps) {
+  return (
+    <svg
+      fill="none"
+      height={size}
+      stroke="currentColor"
+      viewBox="0 0 16 16"
+      width={size}
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path d="M3 5.5L8 2.75L13 5.5L8 8.25L3 5.5Z" strokeLinejoin="round" strokeWidth={1.4} />
+      <path d="M3 5.5V10.5L8 13.25L13 10.5V5.5M8 8.25V13.25" strokeLinejoin="round" strokeWidth={1.4} />
+      <path d="M5.5 4.125L10.5 6.875" strokeLinecap="round" strokeWidth={1.4} />
+    </svg>
+  )
+}
+
+export function SvgGearV2({ size, ...props }: OnyxIconProps) {
+  return (
+    <svg
+      fill="none"
+      height={size}
+      stroke="currentColor"
+      viewBox="0 0 16 16"
+      width={size}
+      xmlns="http://www.w3.org/2000/svg"
+      {...props}
+    >
+      <path
+        d="M6.85 1.75H9.15L9.55 3.45C9.92 3.58 10.27 3.77 10.59 4L12.25 3.48L13.4 5.52L12.12 6.7C12.18 7.08 12.18 7.46 12.12 7.84L13.4 9.02L12.25 11.06L10.59 10.54C10.27 10.77 9.92 10.96 9.55 11.09L9.15 12.8H6.85L6.45 11.09C6.08 10.96 5.73 10.77 5.41 10.54L3.75 11.06L2.6 9.02L3.88 7.84C3.82 7.46 3.82 7.08 3.88 6.7L2.6 5.52L3.75 3.48L5.41 4C5.73 3.77 6.08 3.58 6.45 3.45L6.85 1.75Z"
+        strokeLinejoin="round"
+        strokeWidth={1.3}
+      />
+      <circle cx="8" cy="7.275" r="2" strokeWidth={1.3} />
+    </svg>
+  )
+}
+
 export function SvgChevronDownV2({ size, ...props }: OnyxIconProps) {
   return (
     <svg
