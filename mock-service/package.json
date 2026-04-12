@@ -1,0 +1,9 @@
+{
+  "name": "published-agent-ask-page-mock-service",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Dependency-free mock backend for the published agent ask page handoff package",
+  "scripts": {
+    "start": "node server.js"
+  }
+}

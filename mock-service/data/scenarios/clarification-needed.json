@@ -1,0 +1,29 @@
+{
+  "events": [
+    {
+      "type": "session.started",
+      "conversationId": "dynamic",
+      "assistantMessageId": "dynamic"
+    },
+    {
+      "type": "assistant.thinking",
+      "message": "正在识别问题中的关键分析维度"
+    },
+    {
+      "type": "clarification.requested",
+      "prompt": "你想看哪个区域的销售表现？",
+      "options": ["华东区", "华北区", "全国"]
+    }
+  ],
+  "finalMessage": {
+    "state": "complete",
+    "text": "请先确认分析范围，我再继续计算。",
+    "blocks": [
+      {
+        "type": "clarification",
+        "prompt": "你想看哪个区域的销售表现？",
+        "options": ["华东区", "华北区", "全国"]
+      }
+    ]
+  }
+}

@@ -1,0 +1,187 @@
+// @vitest-environment jsdom
+
+import React from 'react'
+import { act } from 'react'
+import { createRoot, type Root } from 'react-dom/client'
+import { afterEach, describe, expect, it } from 'vitest'
+import { OnyxSourceRailV2 } from '../onyx/onyx-source-rail-v2'
+import { resetChatRuntimeStore, useChatRuntimeStore } from '@/modules/chat/runtime/chat-runtime-store'
+import { resetChatSourceRailStore, useChatSourceRailStore } from '@/modules/chat/runtime/chat-source-rail-store'
+
+type MountedRoot = {
+  container: HTMLDivElement
+  root: Root
+}
+
+const mountedRoots: MountedRoot[] = []
+
+;(globalThis as typeof globalThis & { IS_REACT_ACT_ENVIRONMENT?: boolean }).IS_REACT_ACT_ENVIRONMENT = true
+
+afterEach(() => {
+  while (mountedRoots.length > 0) {
+    const mounted = mountedRoots.pop()
+    if (!mounted) continue
+    act(() => {
+      mounted.root.unmount()
+    })
+    mounted.container.remove()
+  }
+
+  resetChatRuntimeStore()
+  resetChatSourceRailStore()
+})
+
+async function renderRail(
+  items: Array<{
+    id: string
+    title: string
+    body: string
+    eyebrow?: string
+    meta?: string
+    kind?: 'document' | 'mail' | 'chat' | 'insight' | 'search'
+  }> = [
+    {
+      id: 'fallback-session',
+      title: 'Conversation Sessions',
+      body: 'Fallback workspace card'
+    }
+  ]
+) {
+  const container = document.createElement('div')
+  document.body.appendChild(container)
+  const root = createRoot(container)
+  mountedRoots.push({ container, root })
+
+  await act(async () => {
+    root.render(
+      <OnyxSourceRailV2 items={items} />
+    )
+    await Promise.resolve()
+  })
+
+  return container
+}
+
+describe('OnyxSourceRailV2', () => {
+  it('prefers runtime-derived source cards over fallback workspace placeholders', async () => {
+    useChatRuntimeStore.setState(state => ({
+      ...state,
+      lastDone: {
+        artifacts: [
+          {
+            kind: 'result_set',
+            cube: 'Finance',
+            visualType: 'trend',
+            rowCount: 2,
+            colCount: 1,
+            queryLogId: 'query-log-1'
+          },
+          {
+            kind: 'query_reference',
+            queryLogId: 'query-log-1',
+            traceKey: 'trace-1',
+            warningCount: 1
+          }
+        ],
+        meta: {
+          queryLogId: 'query-log-1',
+          traceKey: 'trace-1'
+        }
+      }
+    }))
+
+    const container = await renderRail()
+    const rail = container.querySelector('[data-testid="onyx-donor-source-rail"]')
+    const header = container.querySelector('[data-testid="onyx-donor-source-rail-header"]')
+    const railShell = container.querySelector('[data-testid="onyx-native-donor-source-rail-card"]')
+    const railStack = container.querySelector('[data-testid="onyx-native-donor-source-rail-stack"]')
+    const headerTitle = container.querySelector('[data-testid="onyx-native-donor-source-rail-title"]')
+    const headerArrow = container.querySelector('[data-testid="onyx-native-donor-source-rail-arrow"]')
+    const list = container.querySelector('[data-testid="onyx-donor-source-rail-list"]')
+    const firstCard = container.querySelector('[data-testid="onyx-source-rail-card"]')
+    const firstNativePrimitive = container.querySelector('[data-testid="onyx-native-donor-card"]')
+    const firstTitleShell = container.querySelector('[data-testid="onyx-donor-source-card-title-shell"]')
+    const firstEyebrowShell = container.querySelector('[data-testid="onyx-donor-source-card-eyebrow-shell"]')
+    const firstCopy = container.querySelector('[data-testid="onyx-donor-source-card-copy"]')
+    const firstDensityShell = container.querySelector('[data-testid="onyx-donor-source-card-density-shell"]')
+    const firstMetaShell = container.querySelector('[data-testid="onyx-donor-source-card-meta-shell"]')
+    const firstSummary = container.querySelector('[data-testid="onyx-donor-source-card-summary"]')
+    const firstBodyShell = container.querySelector('[data-testid="onyx-donor-source-card-body-shell"]')
+    const firstBodyCopy = container.querySelector('[data-testid="onyx-donor-source-card-body-copy"]')
+
+    expect(rail?.className).toContain('onyx-donor-source-rail')
+    expect(header?.className).toContain('onyx-donor-source-rail-header')
+    expect(railShell?.className).toContain('onyx-native-donor-source-rail-card')
+    expect(railStack?.className).toContain('onyx-native-donor-source-rail-stack')
+    expect(headerTitle?.className).toContain('onyx-native-donor-source-rail-title')
+    expect(headerArrow?.className).toContain('onyx-native-donor-source-rail-arrow')
+    expect(list?.className).toContain('onyx-donor-source-rail-list')
+    expect(firstCard?.className).toContain('onyx-donor-source-card')
+    expect(firstCard?.className).toContain('onyx-native-donor-document-card')
+    expect(firstNativePrimitive?.className).toContain('onyx-native-donor-card')
+    expect(firstTitleShell?.className).toContain('onyx-donor-source-card-title-shell')
+    expect(firstEyebrowShell?.className).toContain('onyx-donor-source-card-eyebrow-shell')
+    expect(firstCopy?.className).toContain('onyx-donor-source-card-copy')
+    expect(firstDensityShell?.className).toContain('onyx-donor-source-card-density-shell')
+    expect(firstMetaShell?.className).toContain('onyx-donor-source-card-meta-shell')
+    expect(firstSummary?.className).toContain('onyx-donor-source-card-summary')
+    expect(firstBodyShell?.className).toContain('onyx-donor-source-card-body-shell')
+    expect(firstBodyCopy?.className).toContain('onyx-donor-source-card-body-copy')
+    expect(container.textContent).toContain('Query Log Reference')
+    expect(container.textContent).toContain('Finance Result Set')
+    expect(container.textContent).not.toContain('Conversation Sessions')
+    expect(container.innerHTML).toContain('onyx-native-donor-card')
+  })
+
+  it('prefers explicitly selected message sources over the generic runtime rail', async () => {
+    useChatRuntimeStore.setState(state => ({
+      ...state,
+      lastDone: {
+        artifacts: [
+          {
+            kind: 'query_reference',
+            queryLogId: 'query-log-1',
+            traceKey: 'trace-1'
+          }
+        ]
+      }
+    }))
+    useChatSourceRailStore.setState({
+      selectedMessageId: 'msg-9',
+      selectedMessageSources: [
+        {
+          id: 'doc:selected',
+          title: 'Selected Answer Source',
+          body: 'Message-specific source card',
+          kind: 'document'
+        }
+      ]
+    })
+
+    const container = await renderRail()
+
+    expect(container.textContent).toContain('Selected Answer Source')
+    expect(container.textContent).not.toContain('Query Log Reference')
+    expect(container.innerHTML).toContain('data-testid="onyx-native-donor-card"')
+    expect(container.innerHTML).toContain('data-testid="onyx-native-donor-source-rail-card"')
+    expect(container.innerHTML).toContain('onyx-donor-source-card-title-shell')
+    expect(container.innerHTML).toContain('onyx-donor-source-card-copy')
+    expect(container.innerHTML).toContain('onyx-donor-source-card-density-shell')
+    expect(container.innerHTML).toContain('onyx-donor-source-card-body')
+    expect(container.innerHTML).toContain('onyx-donor-source-card-body-shell')
+    expect(container.innerHTML).toContain('onyx-donor-source-card-body-copy')
+    expect(container.innerHTML).toContain('onyx-donor-source-card-summary')
+  })
+
+  it('renders the empty donor source placeholder when no runtime or fallback cards exist', async () => {
+    const container = await renderRail([])
+
+    expect(container.textContent).toContain('No sources yet')
+    expect(container.textContent).toContain('Run Ask to populate the rail')
+    expect(container.querySelector('[data-testid="onyx-donor-source-rail"]')?.className).toContain('onyx-donor-source-rail')
+    expect(container.querySelector('[data-testid="onyx-native-donor-source-rail-card"]')?.className).toContain('onyx-native-donor-source-rail-card')
+    expect(container.querySelector('[data-testid="onyx-source-rail-card"]')?.className).toContain('onyx-donor-source-card')
+    expect(container.querySelector('[data-testid="onyx-source-rail-card"]')?.className).toContain('onyx-native-donor-document-card')
+    expect(container.querySelector('[data-testid="onyx-native-donor-card"]')?.className).toContain('onyx-native-donor-card')
+  })
+})

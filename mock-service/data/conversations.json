@@ -1,0 +1,63 @@
+{
+  "items": [
+    {
+      "conversationId": "conv-sales-001",
+      "title": "华东区销售趋势分析",
+      "lastQuestion": "华东区最近 6 个月销售趋势如何？",
+      "lastUpdatedAt": "2026-04-10T09:40:00.000Z",
+      "messages": [
+        {
+          "messageId": "msg-user-001",
+          "role": "user",
+          "state": "complete",
+          "text": "华东区最近 6 个月销售趋势如何？",
+          "createdAt": "2026-04-10T09:38:00.000Z"
+        },
+        {
+          "messageId": "msg-assistant-001",
+          "role": "assistant",
+          "state": "complete",
+          "text": "华东区最近 6 个月销售总体呈上升趋势，3 月和 4 月增幅最明显。",
+          "createdAt": "2026-04-10T09:38:10.000Z",
+          "feedback": null,
+          "blocks": [
+            {
+              "type": "kpi",
+              "items": [
+                {
+                  "label": "累计销售额",
+                  "value": "¥ 12.8M",
+                  "trend": "+12.4%"
+                },
+                {
+                  "label": "平均月销售额",
+                  "value": "¥ 2.13M",
+                  "trend": "+5.1%"
+                }
+              ]
+            },
+            {
+              "type": "chart",
+              "chartType": "line",
+              "title": "华东区近 6 个月销售趋势",
+              "categories": ["11月", "12月", "1月", "2月", "3月", "4月"],
+              "series": [
+                {
+                  "name": "销售额",
+                  "data": [150, 162, 171, 176, 203, 219]
+                }
+              ]
+            },
+            {
+              "type": "followups",
+              "questions": [
+                "和去年同期相比变化如何？",
+                "华东区增长最快的产品类别是什么？"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

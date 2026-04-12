@@ -1,0 +1,84 @@
+{
+  "events": [
+    {
+      "type": "session.started",
+      "conversationId": "dynamic",
+      "assistantMessageId": "dynamic"
+    },
+    {
+      "type": "assistant.thinking",
+      "message": "正在检查当前筛选条件下的数据可用性"
+    },
+    {
+      "type": "answer.delta",
+      "delta": "当前条件下未找到可返回的数据。"
+    },
+    {
+      "type": "sources.ready",
+      "block": {
+        "type": "sources",
+        "items": [
+          { "label": "Cube", "value": "sale" },
+          { "label": "Metric", "value": "Sales Amount" },
+          { "label": "Filter", "value": "Region=Mars" }
+        ]
+      }
+    },
+    {
+      "type": "answer.completed",
+      "messageText": "当前条件下未找到可返回的数据，建议调整区域或时间范围后重试。",
+      "blocks": [
+        {
+          "type": "empty",
+          "title": "没有查询到结果",
+          "detail": "当前条件下未找到可返回的数据，建议调整区域或时间范围后重试。"
+        },
+        {
+          "type": "sources",
+          "items": [
+            { "label": "Cube", "value": "sale" },
+            { "label": "Metric", "value": "Sales Amount" },
+            { "label": "Filter", "value": "Region=Mars" }
+          ]
+        },
+        {
+          "type": "followups",
+          "questions": [
+            "改成华东区看看",
+            "改成最近 12 个月看看"
+          ]
+        }
+      ],
+      "followups": [
+        "改成华东区看看",
+        "改成最近 12 个月看看"
+      ]
+    }
+  ],
+  "finalMessage": {
+    "state": "complete",
+    "text": "当前条件下未找到可返回的数据，建议调整区域或时间范围后重试。",
+    "blocks": [
+      {
+        "type": "empty",
+        "title": "没有查询到结果",
+        "detail": "当前条件下未找到可返回的数据，建议调整区域或时间范围后重试。"
+      },
+      {
+        "type": "sources",
+        "items": [
+          { "label": "Cube", "value": "sale" },
+          { "label": "Metric", "value": "Sales Amount" },
+          { "label": "Filter", "value": "Region=Mars" }
+        ]
+      },
+      {
+        "type": "followups",
+        "questions": [
+          "改成华东区看看",
+          "改成最近 12 个月看看"
+        ]
+      }
+    ]
+  }
+}

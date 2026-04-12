@@ -1,0 +1,17 @@
+{
+  "agentId": "agent-sales-published",
+  "slug": "sales-cube-ask",
+  "name": "Sales Cube 智能问数",
+  "status": "published",
+  "domain": "Sales Analytics",
+  "summary": "面向销售主题域的已发布智能问数助手，覆盖销售额、销量、区域、产品和趋势分析。",
+  "cube": "sale",
+  "defaultScenario": "sales-summary",
+  "starterQuestions": [
+    "本月销售额是多少？",
+    "华东区最近 6 个月销售趋势如何？",
+    "各区域销售额同比变化如何？",
+    "销量最高的 10 个产品是什么？",
+    "为什么华北区销售额下降了？"
+  ]
+}

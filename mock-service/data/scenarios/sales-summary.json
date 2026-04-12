@@ -1,0 +1,185 @@
+{
+  "events": [
+    {
+      "type": "session.started",
+      "conversationId": "dynamic",
+      "assistantMessageId": "dynamic"
+    },
+    {
+      "type": "assistant.thinking",
+      "message": "正在分析销售主题域上下文"
+    },
+    {
+      "type": "analysis.plan",
+      "steps": ["识别时间范围", "定位区域维度", "汇总销售额", "生成趋势图和明细表"]
+    },
+    {
+      "type": "answer.delta",
+      "delta": "华东区最近 6 个月销售总体呈上升趋势。"
+    },
+    {
+      "type": "answer.delta",
+      "delta": "3 月和 4 月增幅最明显，月度销售额连续走高。"
+    },
+    {
+      "type": "chart.ready",
+      "block": {
+        "type": "chart",
+        "chartType": "line",
+        "title": "华东区近 6 个月销售趋势",
+        "categories": ["11月", "12月", "1月", "2月", "3月", "4月"],
+        "series": [
+          {
+            "name": "销售额",
+            "data": [150, 162, 171, 176, 203, 219]
+          }
+        ]
+      }
+    },
+    {
+      "type": "table.ready",
+      "block": {
+        "type": "table",
+        "title": "月度销售明细",
+        "columns": ["月份", "销售额", "同比"],
+        "rows": [
+          ["11月", "¥1.50M", "+2.1%"],
+          ["12月", "¥1.62M", "+4.2%"],
+          ["1月", "¥1.71M", "+6.5%"],
+          ["2月", "¥1.76M", "+7.4%"],
+          ["3月", "¥2.03M", "+12.8%"],
+          ["4月", "¥2.19M", "+15.0%"]
+        ]
+      }
+    },
+    {
+      "type": "sources.ready",
+      "block": {
+        "type": "sources",
+        "items": [
+          { "label": "Cube", "value": "sale" },
+          { "label": "Metric", "value": "Sales Amount" },
+          { "label": "Dimension", "value": "Region=East China" }
+        ]
+      }
+    },
+    {
+      "type": "answer.completed",
+      "messageText": "华东区最近 6 个月销售总体呈上升趋势，3 月和 4 月增幅最明显，月度销售额连续走高。",
+      "blocks": [
+        {
+          "type": "markdown",
+          "text": "华东区最近 6 个月销售总体呈上升趋势，3 月和 4 月增幅最明显，月度销售额连续走高。"
+        },
+        {
+          "type": "kpi",
+          "items": [
+            { "label": "累计销售额", "value": "¥ 12.8M", "trend": "+12.4%" },
+            { "label": "平均月销售额", "value": "¥ 2.13M", "trend": "+5.1%" }
+          ]
+        },
+        {
+          "type": "chart",
+          "chartType": "line",
+          "title": "华东区近 6 个月销售趋势",
+          "categories": ["11月", "12月", "1月", "2月", "3月", "4月"],
+          "series": [
+            {
+              "name": "销售额",
+              "data": [150, 162, 171, 176, 203, 219]
+            }
+          ]
+        },
+        {
+          "type": "table",
+          "title": "月度销售明细",
+          "columns": ["月份", "销售额", "同比"],
+          "rows": [
+            ["11月", "¥1.50M", "+2.1%"],
+            ["12月", "¥1.62M", "+4.2%"],
+            ["1月", "¥1.71M", "+6.5%"],
+            ["2月", "¥1.76M", "+7.4%"],
+            ["3月", "¥2.03M", "+12.8%"],
+            ["4月", "¥2.19M", "+15.0%"]
+          ]
+        },
+        {
+          "type": "sources",
+          "items": [
+            { "label": "Cube", "value": "sale" },
+            { "label": "Metric", "value": "Sales Amount" },
+            { "label": "Dimension", "value": "Region=East China" }
+          ]
+        },
+        {
+          "type": "followups",
+          "questions": [
+            "和去年同期相比变化如何？",
+            "华东区增长最快的产品类别是什么？"
+          ]
+        }
+      ],
+      "followups": [
+        "和去年同期相比变化如何？",
+        "华东区增长最快的产品类别是什么？"
+      ]
+    }
+  ],
+  "finalMessage": {
+    "state": "complete",
+    "text": "华东区最近 6 个月销售总体呈上升趋势，3 月和 4 月增幅最明显，月度销售额连续走高。",
+    "blocks": [
+      {
+        "type": "markdown",
+        "text": "华东区最近 6 个月销售总体呈上升趋势，3 月和 4 月增幅最明显，月度销售额连续走高。"
+      },
+      {
+        "type": "kpi",
+        "items": [
+          { "label": "累计销售额", "value": "¥ 12.8M", "trend": "+12.4%" },
+          { "label": "平均月销售额", "value": "¥ 2.13M", "trend": "+5.1%" }
+        ]
+      },
+      {
+        "type": "chart",
+        "chartType": "line",
+        "title": "华东区近 6 个月销售趋势",
+        "categories": ["11月", "12月", "1月", "2月", "3月", "4月"],
+        "series": [
+          {
+            "name": "销售额",
+            "data": [150, 162, 171, 176, 203, 219]
+          }
+        ]
+      },
+      {
+        "type": "table",
+        "title": "月度销售明细",
+        "columns": ["月份", "销售额", "同比"],
+        "rows": [
+          ["11月", "¥1.50M", "+2.1%"],
+          ["12月", "¥1.62M", "+4.2%"],
+          ["1月", "¥1.71M", "+6.5%"],
+          ["2月", "¥1.76M", "+7.4%"],
+          ["3月", "¥2.03M", "+12.8%"],
+          ["4月", "¥2.19M", "+15.0%"]
+        ]
+      },
+      {
+        "type": "sources",
+        "items": [
+          { "label": "Cube", "value": "sale" },
+          { "label": "Metric", "value": "Sales Amount" },
+          { "label": "Dimension", "value": "Region=East China" }
+        ]
+      },
+      {
+        "type": "followups",
+        "questions": [
+          "和去年同期相比变化如何？",
+          "华东区增长最快的产品类别是什么？"
+        ]
+      }
+    ]
+  }
+}
