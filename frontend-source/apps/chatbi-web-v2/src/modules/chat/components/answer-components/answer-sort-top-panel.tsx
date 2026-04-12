@@ -25,7 +25,7 @@ export function AnswerSortTopPanel(props: {
 
   return (
     <section className="chat-assistant-component-panel onyx-donor-answer-panel" data-testid="answer-sort-top-panel">
-      <strong>Sort & Top</strong>
+      <strong>排序与前 N</strong>
       <div className="ask-analysis-row">
         <select
           data-testid="answer-sort-top-metric"
@@ -43,7 +43,7 @@ export function AnswerSortTopPanel(props: {
           }
           className="ask-analysis-control ask-analysis-control-grow onyx-donor-answer-panel-control"
         >
-          <option value="">no sort</option>
+          <option value="">不排序</option>
           {props.metrics.map(metric => (
             <option key={metric} value={metric}>
               {metric}
@@ -66,8 +66,8 @@ export function AnswerSortTopPanel(props: {
           }
           className="ask-analysis-control onyx-donor-answer-panel-control"
         >
-          <option value="DESC">DESC</option>
-          <option value="ASC">ASC</option>
+          <option value="DESC">降序</option>
+          <option value="ASC">升序</option>
         </select>
         <input
           data-testid="answer-sort-top-limit"
@@ -98,7 +98,7 @@ export function AnswerSortTopPanel(props: {
                 })
               }}
             >
-              Top {preset}
+              前 {preset}
             </button>
           ))}
         </div>

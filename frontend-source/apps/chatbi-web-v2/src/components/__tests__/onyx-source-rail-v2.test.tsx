@@ -42,8 +42,8 @@ async function renderRail(
   }> = [
     {
       id: 'fallback-session',
-      title: 'Conversation Sessions',
-      body: 'Fallback workspace card'
+      title: '会话记录',
+      body: '备用工作区卡片'
     }
   ]
 ) {
@@ -127,9 +127,9 @@ describe('OnyxSourceRailV2', () => {
     expect(firstSummary?.className).toContain('onyx-donor-source-card-summary')
     expect(firstBodyShell?.className).toContain('onyx-donor-source-card-body-shell')
     expect(firstBodyCopy?.className).toContain('onyx-donor-source-card-body-copy')
-    expect(container.textContent).toContain('Query Log Reference')
-    expect(container.textContent).toContain('Finance Result Set')
-    expect(container.textContent).not.toContain('Conversation Sessions')
+    expect(container.textContent).toContain('查询日志引用')
+    expect(container.textContent).toContain('Finance 结果集')
+    expect(container.textContent).not.toContain('会话记录')
     expect(container.innerHTML).toContain('onyx-native-donor-card')
   })
 
@@ -151,8 +151,8 @@ describe('OnyxSourceRailV2', () => {
       selectedMessageSources: [
         {
           id: 'doc:selected',
-          title: 'Selected Answer Source',
-          body: 'Message-specific source card',
+          title: '选中回答来源',
+          body: '消息专属来源卡片',
           kind: 'document'
         }
       ]
@@ -160,8 +160,8 @@ describe('OnyxSourceRailV2', () => {
 
     const container = await renderRail()
 
-    expect(container.textContent).toContain('Selected Answer Source')
-    expect(container.textContent).not.toContain('Query Log Reference')
+    expect(container.textContent).toContain('选中回答来源')
+    expect(container.textContent).not.toContain('查询日志引用')
     expect(container.innerHTML).toContain('data-testid="onyx-native-donor-card"')
     expect(container.innerHTML).toContain('data-testid="onyx-native-donor-source-rail-card"')
     expect(container.innerHTML).toContain('onyx-donor-source-card-title-shell')
@@ -176,8 +176,8 @@ describe('OnyxSourceRailV2', () => {
   it('renders the empty donor source placeholder when no runtime or fallback cards exist', async () => {
     const container = await renderRail([])
 
-    expect(container.textContent).toContain('No sources yet')
-    expect(container.textContent).toContain('Run Ask to populate the rail')
+    expect(container.textContent).toContain('暂无来源')
+    expect(container.textContent).toContain('运行问答后展示来源')
     expect(container.querySelector('[data-testid="onyx-donor-source-rail"]')?.className).toContain('onyx-donor-source-rail')
     expect(container.querySelector('[data-testid="onyx-native-donor-source-rail-card"]')?.className).toContain('onyx-native-donor-source-rail-card')
     expect(container.querySelector('[data-testid="onyx-source-rail-card"]')?.className).toContain('onyx-donor-source-card')

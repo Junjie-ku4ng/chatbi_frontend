@@ -70,7 +70,7 @@ describe('AskConversationReplayV2', () => {
     const container = await renderReplay()
 
     expect(listConversationTurnsMock).toHaveBeenCalledWith('conv-2', 12, 0)
-    expect(container.textContent).toContain('Conversation Replay')
+    expect(container.textContent).toContain('会话回放')
     expect(container.textContent).toContain('Show month over month revenue')
     expect(container.textContent).toContain('Revenue declined 6.2% versus prior month.')
   })

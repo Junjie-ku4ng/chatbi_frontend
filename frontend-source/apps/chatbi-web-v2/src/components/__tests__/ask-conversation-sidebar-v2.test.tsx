@@ -119,10 +119,10 @@ describe('AskConversationSidebarV2', () => {
 
     expect(list?.className).toContain('onyx-donor-session-list')
     expect(items.length).toBeGreaterThan(0)
-    expect(container.textContent).toContain('Summarize Most Recent 3')
-    expect(container.textContent).toContain('Onyx AI Intro')
+    expect(container.textContent).toContain('最近三次对话摘要')
+    expect(container.textContent).toContain('镜元智算简介')
     expect(container.textContent).not.toContain('Starter session')
-    expect(container.textContent).not.toContain('Conversation load failed')
+    expect(container.textContent).not.toContain('会话加载失败')
     expect(container.textContent).not.toContain('Access denied')
   })
 
@@ -133,8 +133,8 @@ describe('AskConversationSidebarV2', () => {
 
     expect(listConversationsMock).not.toHaveBeenCalled()
     expect(container.querySelector('[data-testid="onyx-donor-session-list"]')?.className).toContain('onyx-donor-session-list')
-    expect(container.textContent).toContain('Summarize Most Recent 3')
-    expect(container.textContent).toContain('Onyx AI Latest News')
+    expect(container.textContent).toContain('最近三次对话摘要')
+    expect(container.textContent).toContain('镜元智算最新动态')
     expect(container.textContent).not.toContain('Starter session')
   })
 
@@ -147,8 +147,8 @@ describe('AskConversationSidebarV2', () => {
     const { container } = await renderSidebar()
 
     expect(container.querySelector('[data-testid="onyx-donor-session-list"]')?.className).toContain('onyx-donor-session-list')
-    expect(container.textContent).toContain('Summarize Most Recent 3')
-    expect(container.textContent).toContain('POC Documents')
+    expect(container.textContent).toContain('最近三次对话摘要')
+    expect(container.textContent).toContain('POC 文档')
     expect(container.textContent).not.toContain('Starter session')
     expect(container.textContent).not.toContain('Try sending a message!')
   })
@@ -164,9 +164,9 @@ describe('AskConversationSidebarV2', () => {
       preferActiveConversationFallback: true
     })
 
-    expect(container.textContent).toContain('Current conversation')
+    expect(container.textContent).toContain('当前会话')
     expect(container.textContent).toContain('conv-live')
-    expect(container.textContent).not.toContain('Summarize Most Recent 3')
+    expect(container.textContent).not.toContain('最近三次对话摘要')
   })
 
   it('re-loads conversations when a new active conversation is created in the current workspace', async () => {

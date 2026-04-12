@@ -91,7 +91,7 @@ export function RuntimeAnalyticalCardPreview({
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
             Runtime AnalyticalCard Preview
           </p>
-          <h1 className="text-3xl font-semibold tracking-tight">Onyx x xpert runtime-hosted chart</h1>
+          <h1 className="text-3xl font-semibold tracking-tight">镜元智算 x xpert 运行时图表预览</h1>
           <p className="max-w-3xl text-sm text-slate-600">
             Default analytical-card runtime factory drives this preview through the transplanted xpert chart card.
           </p>

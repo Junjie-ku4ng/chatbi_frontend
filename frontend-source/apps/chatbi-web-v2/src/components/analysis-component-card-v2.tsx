@@ -21,9 +21,15 @@ type ISlicer = {
 
 function formatSurfaceKind(type: AnswerSurfaceView) {
   if (type === 'kpi') {
-    return 'KPI surface'
+    return 'KPI 分析'
   }
-  return `${type.charAt(0).toUpperCase()}${type.slice(1)} surface`
+  if (type === 'chart') {
+    return '图表分析'
+  }
+  if (type === 'table') {
+    return '表格分析'
+  }
+  return `${type} 分析`
 }
 
 function asStringList(value: unknown) {
@@ -62,7 +68,7 @@ function buildAppliedDraftSummary(draftPatch: Record<string, unknown>) {
   const tokens: string[] = []
 
   if (typeof draftPatch.topN === 'number' && Number.isFinite(draftPatch.topN)) {
-    tokens.push(`Top ${Math.floor(draftPatch.topN)}`)
+    tokens.push(`前 ${Math.floor(draftPatch.topN)}`)
   }
 
   const sort = asRecord(draftPatch.sort)
@@ -70,7 +76,7 @@ function buildAppliedDraftSummary(draftPatch: Record<string, unknown>) {
     const by = typeof sort.by === 'string' && sort.by.trim() ? sort.by.trim() : undefined
     const dir = sort.dir === 'ASC' || sort.dir === 'DESC' ? sort.dir : undefined
     if (by && dir) {
-      tokens.push(`Sort ${by} ${dir}`)
+      tokens.push(`排序 ${by} ${dir}`)
     }
   }
 
@@ -198,7 +204,7 @@ export function AnalysisComponentCardV2({
   const title =
     (typeof payload.label === 'string' && payload.label.trim()) ||
     (typeof payload.interaction?.story?.title === 'string' && payload.interaction.story.title.trim()) ||
-    'Analysis result'
+    '分析结果'
   const contextTokens = buildContextTokens(payload)
   const appliedDraftSummary = buildAppliedDraftSummary(appliedDraftPatch)
 
@@ -226,19 +232,19 @@ export function AnalysisComponentCardV2({
       const title =
         (typeof payload.interaction?.story?.title === 'string' && payload.interaction.story.title.trim()) ||
         (typeof payload.label === 'string' && payload.label.trim()) ||
-        'Analysis result'
+        '分析结果'
 
       const result = await saveAnswerSurfaceToStory({
         type,
         payload,
-        storyTitle: `${title} canvas`,
+        storyTitle: `${title} 画布`,
         widgetTitle: title
       })
 
       window.open(result.designerHref, '_blank', 'noopener,noreferrer')
-      setCanvasStatus(`Canvas ready (${result.story.id})`)
+      setCanvasStatus(`画布已就绪（${result.story.id}）`)
     } catch (error) {
-      setCanvasStatus(error instanceof Error ? error.message : 'Canvas open failed')
+      setCanvasStatus(error instanceof Error ? error.message : '打开画布失败')
     } finally {
       setIsOpeningCanvas(false)
     }
@@ -318,7 +324,7 @@ export function AnalysisComponentCardV2({
           aria-modal="true"
         >
           <div className="chat-assistant-answer-surface-dialog-bar onyx-donor-answer-surface-dialog-bar">
-            <strong className="v2-analysis-explorer-title">Explorer</strong>
+            <strong className="v2-analysis-explorer-title">探索器</strong>
             <button
               type="button"
               className="chat-assistant-answer-action onyx-donor-answer-surface-action"
@@ -326,7 +332,7 @@ export function AnalysisComponentCardV2({
                 setIsExplorerOpen(false)
               }}
             >
-              Close Explorer
+              关闭探索器
             </button>
           </div>
           <div data-testid="analysis-explorer-shell-v2">
@@ -366,7 +372,7 @@ export function AnalysisComponentCardV2({
                   setExplorerDraftPatch({ ...appliedDraftPatch })
                 }}
               >
-                Reset changes
+                重置更改
               </button>
               <button
                 type="button"
@@ -376,7 +382,7 @@ export function AnalysisComponentCardV2({
                   setIsExplorerOpen(false)
                 }}
               >
-                Apply to card
+                应用到卡片
               </button>
             </div>
           </div>

@@ -364,6 +364,11 @@ textarea {
   grid-template-columns: 240px minmax(0, 1fr) 288px;
   background: #f7f7f5;
   color: #1f2937;
+  transition: grid-template-columns 180ms ease;
+}
+
+.onyx-app-frame-v2.is-sidebar-collapsed {
+  grid-template-columns: 72px minmax(0, 1fr) 288px;
 }
 
 .onyx-app-frame-v2-main {
@@ -382,8 +387,14 @@ textarea {
 
 .onyx-sidebar-v2 {
   display: grid;
-  grid-template-rows: auto auto minmax(0, 1fr) auto;
-  gap: 18px;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 0;
+  border-right: 1px solid rgba(15, 23, 42, 0.08);
+  transition: padding 180ms ease;
+}
+
+.onyx-sidebar-v2.is-collapsed {
+  padding-inline: 10px;
 }
 
 .onyx-donor-sidebar-root {
@@ -392,7 +403,7 @@ textarea {
 
 .onyx-sidebar-v2-top {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: space-between;
 }
 
@@ -400,22 +411,78 @@ textarea {
   gap: 12px;
 }
 
+.onyx-sidebar-v2 .onyx-native-donor-sidebar-top-card,
+.onyx-sidebar-v2 .onyx-native-donor-sidebar-primary-card,
+.onyx-sidebar-v2 .onyx-native-donor-sidebar-section-card,
+.onyx-sidebar-v2 .onyx-native-donor-sidebar-footer-card {
+  border-color: transparent;
+  background: transparent;
+  box-shadow: none;
+  border-radius: 0;
+}
+
+.onyx-sidebar-v2 .onyx-native-donor-sidebar-top-stack {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
 .onyx-sidebar-v2-brand {
   display: flex;
   align-items: center;
+}
+
+.chatbi-logo-typed-v2 {
+  min-width: 0;
+}
+
+.chatbi-logo-mark-v2 {
+  display: inline-block;
+  flex: 0 0 auto;
+  background-image: url('/chatbi_logo.png');
+  background-position: center 63%;
+  background-repeat: no-repeat;
+  background-size: 185%;
+  border-radius: 50%;
+}
+
+.chatbi-logo-wordmark-v2 {
+  color: #111827;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: nowrap;
 }
 
 .onyx-sidebar-v2-collapse {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
-  border: 0;
-  border-radius: 10px;
-  background: transparent;
-  color: #8b93a1;
+  width: 30px;
+  height: 30px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.76);
+  color: #4b5563;
   cursor: pointer;
+  box-shadow: 0 1px 2px rgba(15, 23, 42, 0.06);
+  transition: background 140ms ease, border-color 140ms ease, color 140ms ease, transform 140ms ease;
+}
+
+.onyx-sidebar-v2-collapse:hover {
+  border-color: rgba(15, 23, 42, 0.18);
+  background: #ffffff;
+  color: #111827;
+}
+
+.onyx-sidebar-v2-collapse svg {
+  transition: transform 180ms ease;
+}
+
+.onyx-sidebar-v2.is-collapsed .onyx-sidebar-v2-collapse svg {
+  transform: rotate(180deg);
 }
 
 .onyx-sidebar-v2-primary {
@@ -425,6 +492,23 @@ textarea {
 
 .onyx-donor-sidebar-primary {
   align-content: start;
+}
+
+.onyx-sidebar-v2-session-panel {
+  align-self: start;
+}
+
+.onyx-sidebar-v2-session-panel .onyx-native-donor-sidebar-primary-stack {
+  gap: 10px;
+}
+
+.onyx-sidebar-v2-session-heading {
+  color: #6b7280;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: 1.2;
+  padding: 8px 10px 0;
 }
 
 .onyx-sidebar-v2-new-session {
@@ -478,7 +562,7 @@ textarea {
   overflow: auto;
   display: grid;
   align-content: start;
-  gap: 18px;
+  gap: 4px;
 }
 
 .onyx-donor-sidebar-scroll {
@@ -524,6 +608,19 @@ textarea {
   display: flex;
   align-items: flex-end;
   padding-top: 4px;
+}
+
+.onyx-sidebar-v2.is-collapsed .chatbi-logo-wordmark-v2,
+.onyx-sidebar-v2.is-collapsed .onyx-sidebar-v2-session-heading,
+.onyx-sidebar-v2.is-collapsed .onyx-donor-session-list,
+.onyx-sidebar-v2.is-collapsed .onyx-sidebar-v2-account-label {
+  display: none;
+}
+
+.onyx-sidebar-v2.is-collapsed .onyx-native-donor-sidebar-primary-stack,
+.onyx-sidebar-v2.is-collapsed .onyx-native-donor-sidebar-section-stack,
+.onyx-sidebar-v2.is-collapsed .onyx-native-donor-sidebar-footer-stack {
+  align-items: center;
 }
 
 .onyx-donor-sidebar-footer {

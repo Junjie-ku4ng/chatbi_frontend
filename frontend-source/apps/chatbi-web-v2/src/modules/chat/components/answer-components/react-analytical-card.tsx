@@ -751,13 +751,13 @@ export function ReactAnalyticalCard({
                   setIsSlicersOpen(value => !value)
                 }}
               >
-                Slicers{analyticalState.state.slicers.length > 0 ? ' *' : ''}
+                筛选器{analyticalState.state.slicers.length > 0 ? ' *' : ''}
               </button>
             ) : null}
 
             {isLoading ? (
               <div className="rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-xs font-medium text-slate-500">
-                Loading
+                加载中
               </div>
             ) : (
               <button
@@ -779,7 +779,7 @@ export function ReactAnalyticalCard({
                   }
                 }}
               >
-                Refresh
+                刷新
               </button>
             )}
 
@@ -796,7 +796,7 @@ export function ReactAnalyticalCard({
                   downloadBlob(`${title || 'data'}.csv`, new Blob([csv], { type: 'text/csv;charset=utf-8' }))
                 }}
               >
-                Download
+                下载
               </button>
             ) : null}
 
@@ -818,7 +818,7 @@ export function ReactAnalyticalCard({
                   link.remove()
                 }}
               >
-                Screenshot
+                截图
               </button>
             ) : null}
           </div>
@@ -869,13 +869,13 @@ export function ReactAnalyticalCard({
               }}
               type="button"
             >
-              Link Analysis
+              联动分析
             </button>
 
             {drillLevelGroups.length > 0 ? (
               <div className="mt-2 border-t border-slate-100 pt-2">
                 <div className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
-                  Drill Level
+                  下钻层级
                 </div>
                 {drillLevelGroups.map((group, index) => (
                   <div key={`${group.property.name}-${index}`} className="mt-1">
@@ -948,7 +948,7 @@ export function ReactAnalyticalCard({
             {drillDimensionGroups.length > 0 && drillDimensions.length > 0 ? (
               <div className="mt-2 border-t border-slate-100 pt-2">
                 <div className="px-3 pb-1 text-xs font-semibold uppercase tracking-wide text-slate-400">
-                  Drill Dimension
+                  下钻维度
                 </div>
                 {drillDimensionGroups.map((group, index) => (
                   <div key={`${group.label}-${index}`} className="mt-1">
@@ -1002,7 +1002,7 @@ export function ReactAnalyticalCard({
                 }}
                 type="button"
               >
-                Drill Down
+                下钻
               </button>
             ) : null}
           </div>
@@ -1011,7 +1011,7 @@ export function ReactAnalyticalCard({
         {error ? (
           <div className="rounded-2xl border border-rose-200 bg-rose-50 px-4 py-8 text-sm text-rose-700">
             <div className="flex items-center gap-3">
-              <span className="text-2xl" role="img" aria-label="error">
+              <span className="text-2xl" role="img" aria-label="错误">
                 🐞
               </span>
               <span>{error}</span>
@@ -1022,10 +1022,10 @@ export function ReactAnalyticalCard({
         {!error && isEmpty ? (
           <div className="rounded-2xl border border-slate-200 bg-slate-50 px-4 py-8 text-sm text-slate-500">
             <div className="flex items-center gap-3">
-              <span className="text-2xl" role="img" aria-label="empty">
+              <span className="text-2xl" role="img" aria-label="空状态">
                 🛒
               </span>
-              <span>Data Empty</span>
+              <span>暂无数据</span>
             </div>
           </div>
         ) : null}

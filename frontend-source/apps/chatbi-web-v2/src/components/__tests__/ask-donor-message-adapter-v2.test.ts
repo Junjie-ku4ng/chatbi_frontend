@@ -70,7 +70,7 @@ describe('ask donor message adapter v2', () => {
     ])
 
     expect(presentation.tone).toBe('clarification')
-    expect(presentation.runtimeShellHeader).toBe('Thinking')
+    expect(presentation.runtimeShellHeader).toBe('思考中')
     expect(presentation.runtimeStepItems.map(item => item.key)).toEqual(['plan-1'])
     expect(presentation.runtimeTerminalItems).toHaveLength(0)
     expect(presentation.finalAnswerSections.map(section => `${section.sectionKind}:${section.item.key}`)).toEqual([

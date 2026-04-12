@@ -38,7 +38,7 @@ export function RuntimeStepRendererV2({
         className="font-secondary-mono text-[11px] uppercase tracking-[0.14em] text-[#6b7280]"
         data-testid="onyx-donor-runtime-step-label"
       >
-        {item.kind === 'plan_step' ? 'Plan update' : 'Runtime'}
+        {item.kind === 'plan_step' ? '规划更新' : '运行时'}
       </span>
       <span
         className="font-main-ui-action text-[14px] leading-5 text-[#111827]"

@@ -154,7 +154,7 @@ describe('AskRuntimeShellV2', () => {
     expect(container.querySelector('[data-testid="onyx-native-donor-rail-card-active-handoff"]')).not.toBeNull()
     expect(container.querySelector('[data-testid="onyx-native-donor-rail-card-runtime-status"]')).not.toBeNull()
     expect(container.querySelector('[data-testid="onyx-native-donor-rail-card-resource-requests"]')).not.toBeNull()
-    expect(container.textContent).toContain('Deep Research')
+    expect(container.textContent).toContain('深度研究')
     expect(container.textContent).toContain('GPT-5')
     expect(container.querySelector('#onyx-chat-input')).not.toBeNull()
     expect(container.querySelector('[data-testid="onyx-native-donor-composer-card"]')).not.toBeNull()
@@ -175,7 +175,7 @@ describe('AskRuntimeShellV2', () => {
     expect(container.querySelector('#onyx-chat-input-send-button svg')).not.toBeNull()
     expect((container.querySelector('#onyx-chat-input-send-button') as HTMLButtonElement | null)?.className).toContain('onyx-donor-composer-send')
     expect(container.querySelector('[data-testid="onyx-donor-composer-send-glyph"]')).not.toBeNull()
-    expect((container.querySelector('#onyx-chat-input-send-button') as HTMLButtonElement | null)?.getAttribute('aria-label')).toBe('Send message')
+    expect((container.querySelector('#onyx-chat-input-send-button') as HTMLButtonElement | null)?.getAttribute('aria-label')).toBe('发送消息')
     expect(container.querySelector('[data-testid="actions-container"]')).not.toBeNull()
     expect(container.querySelector('[data-contract="ask.composer.dock"]')).not.toBeNull()
   })
@@ -274,8 +274,8 @@ describe('AskRuntimeShellV2', () => {
     })
 
     expect(container.textContent).not.toContain('Live Ask Runtime')
-    expect(container.textContent).toContain('What is PA ChatBI?')
-    expect(container.textContent).toContain('Deep Research')
+    expect(container.textContent).toContain('镜元智算能做什么？')
+    expect(container.textContent).toContain('深度研究')
     expect(container.textContent).toContain('GPT-5')
     expect(container.querySelector('[data-testid="onyx-donor-runtime-thread-viewport"]')).not.toBeNull()
     expect(container.querySelector('[data-testid="onyx-donor-welcome-stack"]')).not.toBeNull()
@@ -295,7 +295,7 @@ describe('AskRuntimeShellV2', () => {
     expect(container.querySelector('[data-testid="onyx-native-donor-welcome-secondary-card"]')).not.toBeNull()
     expect(container.querySelector('[data-testid="ask-runtime-composer-secondary-controls"]')).not.toBeNull()
     expect((container.querySelector('[data-testid="ask-v2-input"]') as HTMLTextAreaElement | null)?.getAttribute('placeholder')).toBe(
-      'Ask follow-up questions'
+      '继续追问'
     )
   })
 
@@ -326,7 +326,7 @@ describe('AskRuntimeShellV2', () => {
     expect(container.querySelector('[data-testid="onyx-runtime-welcome-question-chip"]')).not.toBeNull()
     expect(container.querySelector('[data-testid="onyx-runtime-welcome-answer-card"]')).not.toBeNull()
     expect(container.querySelector('[data-testid="onyx-native-donor-welcome-answer-card"]')).not.toBeNull()
-    expect(container.textContent).toContain('What is PA ChatBI?')
+    expect(container.textContent).toContain('镜元智算能做什么？')
   })
 
   it('hydrates persisted thread history when opening a conversation directly from the route', async () => {

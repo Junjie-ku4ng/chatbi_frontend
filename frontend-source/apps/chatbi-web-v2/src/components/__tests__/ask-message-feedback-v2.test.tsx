@@ -114,7 +114,7 @@ describe('AskMessageFeedbackV2', () => {
     expect(container.querySelector('[data-testid="AgentMessage/like-button"]')).not.toBeNull()
     expect(container.querySelector('[data-testid="AgentMessage/dislike-button"]')).not.toBeNull()
     expect(container.querySelector('[data-testid="AgentMessage/regenerate"]')).not.toBeNull()
-    expect(Array.from(container.querySelectorAll('button')).some(button => button.textContent?.trim() === 'Sources')).toBe(false)
+    expect(Array.from(container.querySelectorAll('button')).some(button => button.textContent?.trim() === '来源')).toBe(false)
   })
 
   it('renders the donor-style source affordance when the message has real sources', async () => {
@@ -124,7 +124,7 @@ describe('AskMessageFeedbackV2', () => {
       sources: [
         {
           id: 'query-log:query-log-1',
-          title: 'Query Log Reference',
+          title: '查询日志引用',
           body: 'Analytical evidence captured for this answer.',
           meta: 'query-log-1',
           kind: 'document'
@@ -133,7 +133,7 @@ describe('AskMessageFeedbackV2', () => {
     })
 
     expect(container.querySelector('[data-testid="onyx-donor-toolbar-sources"]')).not.toBeNull()
-    expect(Array.from(container.querySelectorAll('button')).some(button => button.textContent?.trim() === 'Sources')).toBe(true)
+    expect(Array.from(container.querySelectorAll('button')).some(button => button.textContent?.trim() === '来源')).toBe(true)
   })
 
   it('copies the final answer text through the donor toolbar copy action', async () => {
@@ -145,7 +145,7 @@ describe('AskMessageFeedbackV2', () => {
       getCopyHtml: () => '<p>Revenue is up 12% month over month.</p>'
     })
 
-    const copyButton = container.querySelector('button[aria-label="Copy answer"]')
+    const copyButton = container.querySelector('button[aria-label="复制回答"]')
 
     await act(async () => {
       copyButton?.dispatchEvent(new MouseEvent('click', { bubbles: true }))

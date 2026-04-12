@@ -84,13 +84,13 @@ export function AnswerEvidenceDrawer(props: {
 
   return (
     <section className="chat-assistant-component-panel onyx-donor-answer-panel" data-testid="answer-evidence-drawer">
-      <strong>Evidence</strong>
-      {queryLogId ? <p data-testid="answer-evidence-query-log-id">Query Log: {queryLogId}</p> : null}
-      {traceKey ? <p data-testid="answer-evidence-trace-key">Trace: {traceKey}</p> : null}
+      <strong>证据</strong>
+      {queryLogId ? <p data-testid="answer-evidence-query-log-id">查询日志：{queryLogId}</p> : null}
+      {traceKey ? <p data-testid="answer-evidence-trace-key">追踪：{traceKey}</p> : null}
 
       {warnings.length > 0 ? (
         <div className="chat-assistant-answer-evidence-section">
-          <strong>Warnings</strong>
+          <strong>警告</strong>
           <ul className="chat-assistant-answer-evidence-list">
             {warnings.map((warning, index) => (
               <li key={`${warning}-${index}`} data-testid={`answer-evidence-warning-${index}`}>
@@ -103,7 +103,7 @@ export function AnswerEvidenceDrawer(props: {
 
       {refs.length > 0 ? (
         <div className="chat-assistant-answer-evidence-section">
-          <strong>Provenance</strong>
+          <strong>来源</strong>
           <div className="chat-assistant-answer-evidence-refs">
             {refs.map((ref, index) => {
               const heading = asString(ref.label) ?? asString(ref.kind) ?? `ref-${index + 1}`
@@ -128,7 +128,7 @@ export function AnswerEvidenceDrawer(props: {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Open Analysis
+              打开分析
             </a>
           ) : null}
           {openTraceHref ? (
@@ -139,7 +139,7 @@ export function AnswerEvidenceDrawer(props: {
               target="_blank"
               rel="noopener noreferrer"
             >
-              Open Trace
+              打开追踪
             </a>
           ) : null}
         </div>

@@ -9,10 +9,10 @@ import { listConversationThreadMessages } from '@/lib/ask-data'
 import { frontendPlatformAdapter } from '@/lib/platform-adapter-bridge'
 import {
   SvgArrowUpV2,
+  SvgChatbiMarkV2,
   SvgChevronDownV2,
   SvgCopyV2,
   SvgHourglassV2,
-  SvgOnyxMarkV2,
   SvgPlusV2,
   SvgRotateV2,
   SvgSearchMenuV2,
@@ -56,18 +56,18 @@ function formatProgress(event: ChatStreamEvent | null) {
   const phase = event.data.phase ?? 'processing'
   const phaseLabel =
     phase === 'context'
-      ? 'Context'
+      ? '上下文'
       : phase === 'resolve'
-        ? 'Resolve'
+        ? '解析'
         : phase === 'plan'
-          ? 'Plan'
+          ? '规划'
           : phase === 'execute'
-            ? 'Execute'
+            ? '执行'
             : phase === 'render'
-              ? 'Render'
-              : 'Processing'
+              ? '渲染'
+              : '处理中'
 
-  return `${phaseLabel}: ${event.data.message ?? 'running'}`
+  return `${phaseLabel}: ${event.data.message ?? '运行中'}`
 }
 
 export function AskRuntimeShellV2({
@@ -111,7 +111,7 @@ export function AskRuntimeShellV2({
         }
         setInitialMessages([])
         setHistoryLoadState('ready')
-        setHistoryLoadError(error instanceof Error ? error.message : 'Failed to load conversation history.')
+        setHistoryLoadError(error instanceof Error ? error.message : '加载会话历史失败。')
       })
 
     return () => {
@@ -122,7 +122,7 @@ export function AskRuntimeShellV2({
   if (initialConversationId && historyLoadState === 'loading') {
     return (
       <HistoryLoadingStateV2 renderRail={renderRail} shellAnchors={shellAnchors}>
-        Loading conversation history…
+        正在加载会话历史...
       </HistoryLoadingStateV2>
     )
   }
@@ -173,7 +173,7 @@ function HistoryLoadingStateV2({
                 className="onyx-runtime-composer-input"
                 data-testid="ask-v2-input"
                 disabled
-                placeholder="Ask follow-up questions"
+                placeholder="继续追问"
                 rows={1}
               />
             }
@@ -185,21 +185,19 @@ function HistoryLoadingStateV2({
   )
 }
 
-function railTestIdFromTitle(title: string) {
-  return `onyx-native-donor-rail-card-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`
-}
-
 function DiagnosticsRailCardV2({
   title,
+  testId,
   children
 }: {
   title: string
+  testId: string
   children: ReactNode
 }) {
   return (
     <OnyxDonorCardV2
       className="onyx-native-donor-rail-card"
-      data-testid={railTestIdFromTitle(title)}
+      data-testid={`onyx-native-donor-rail-card-${testId}`}
       padding="sm"
       variant="secondary"
     >
@@ -248,7 +246,7 @@ function AskRuntimeShellSessionV2({
       }
 
       if (event.event === 'error') {
-        setQueryStatus(asString(event.data?.message) ?? 'Query stream failed')
+        setQueryStatus(asString(event.data?.message) ?? '查询流失败')
       }
     },
     onRuntimeError: error => {
@@ -333,8 +331,8 @@ function AskRuntimeShellSessionV2({
 
   const welcomeSummary =
     activeXpertId && activeXpertId.trim() !== ''
-      ? `PA ChatBI connects the Onyx chat shell to the ${activeXpertId} workspace runtime.`
-      : 'PA ChatBI connects the Onyx chat shell to the platform runtime and semantic analysis stack.'
+      ? `镜元智算已连接到 ${activeXpertId} 工作区运行时。`
+      : '镜元智算已连接平台运行时和语义分析栈。'
 
   return (
     <AssistantRuntimeProvider runtime={runtime}>
@@ -351,8 +349,8 @@ function AskRuntimeShellSessionV2({
                 <div className="onyx-native-donor-thread-header-stack" data-testid="onyx-native-donor-thread-header-stack">
                   <div className="v2-runtime-thread-header-row">
                     <div className="v2-runtime-thread-header-copy">
-                      <SvgOnyxMarkV2 size={18} />
-                      <span>Chat</span>
+                      <SvgChatbiMarkV2 size={18} />
+                      <span>对话</span>
                     </div>
                   </div>
                 </div>
@@ -372,9 +370,9 @@ function AskRuntimeShellSessionV2({
                       <div className="onyx-runtime-empty-state onyx-donor-welcome-stack" data-testid="onyx-donor-welcome-stack">
                       <div className="onyx-runtime-empty-question" data-testid="onyx-runtime-welcome-question-chip">
                         <OnyxDonorQuestionCardV2
-                          body="What is PA ChatBI?"
-                          meta="Welcome prompt"
-                          title="Question"
+                          body="镜元智算能做什么？"
+                          meta="欢迎提问"
+                          title="问题"
                         />
                       </div>
                         <OnyxDonorCardV2
@@ -386,31 +384,31 @@ function AskRuntimeShellSessionV2({
                           <div data-testid="onyx-native-donor-welcome-answer-card">
                             <div className="onyx-runtime-empty-answer-head">
                               <span className="onyx-runtime-empty-mark">
-                                <SvgOnyxMarkV2 size={18} />
+                                <SvgChatbiMarkV2 size={18} />
                               </span>
-                              <span className="onyx-runtime-empty-search">Searched for: PA ChatBI</span>
+                              <span className="onyx-runtime-empty-search">已检索：镜元智算</span>
                             </div>
                             <div className="onyx-runtime-empty-copy onyx-donor-welcome-copy-block" data-testid="onyx-donor-welcome-copy-block">
                               <p>{welcomeSummary}</p>
                               <ul>
                                 <li>
-                                  <strong>Streams live Ask runtime events:</strong> through the Onyx conversation shell.
+                                  <strong>实时展示问答运行事件：</strong>通过镜元智算对话工作台呈现。
                                 </li>
                                 <li>
-                                  <strong>Embeds chart, KPI, and table answers:</strong> directly in assistant messages.
+                                  <strong>嵌入图表、KPI 和表格回答：</strong>直接呈现在助手消息中。
                                 </li>
                                 <li>
-                                  <strong>Keeps trace and source context visible:</strong> in the right rail.
+                                  <strong>保留追踪和来源上下文：</strong>在右侧来源栏持续可见。
                                 </li>
                               </ul>
                             </div>
                             <div className="onyx-donor-welcome-toolbar-row-shell" data-testid="onyx-donor-welcome-toolbar-row">
                               <div className="onyx-runtime-empty-actions onyx-donor-welcome-toolbar-row" data-testid="ask-runtime-toolbar">
                                 <div className="onyx-runtime-empty-toolbar">
-                                  <OnyxSelectButtonV2 aria-label="Copy answer" icon={SvgCopyV2} onClick={() => {}} size="sm" variant="select-light" />
-                                  <OnyxSelectButtonV2 aria-label="Helpful" icon={SvgThumbUpV2} onClick={() => {}} size="sm" variant="select-light" />
-                                  <OnyxSelectButtonV2 aria-label="Needs work" icon={SvgThumbDownV2} onClick={() => {}} size="sm" variant="select-light" />
-                                  <OnyxSelectButtonV2 aria-label="Retry answer" icon={SvgRotateV2} onClick={() => {}} size="sm" variant="select-light" />
+                                  <OnyxSelectButtonV2 aria-label="复制回答" icon={SvgCopyV2} onClick={() => {}} size="sm" variant="select-light" />
+                                  <OnyxSelectButtonV2 aria-label="有帮助" icon={SvgThumbUpV2} onClick={() => {}} size="sm" variant="select-light" />
+                                  <OnyxSelectButtonV2 aria-label="需要改进" icon={SvgThumbDownV2} onClick={() => {}} size="sm" variant="select-light" />
+                                  <OnyxSelectButtonV2 aria-label="重新生成" icon={SvgRotateV2} onClick={() => {}} size="sm" variant="select-light" />
                                 </div>
                                 <OnyxSelectButtonV2
                                   data-testid="onyx-runtime-welcome-source-button"
@@ -418,7 +416,7 @@ function AskRuntimeShellSessionV2({
                                   state="selected"
                                   variant="select-light"
                                 >
-                                  All Sources
+                                  全部来源
                                 </OnyxSelectButtonV2>
                               </div>
                             </div>
@@ -432,20 +430,20 @@ function AskRuntimeShellSessionV2({
                         >
                           <div data-testid="onyx-native-donor-welcome-secondary-card">
                             <div className="onyx-runtime-welcome-note-head">
-                              <div className="onyx-runtime-welcome-note-title">Considering PA ChatBI capabilities...</div>
+                              <div className="onyx-runtime-welcome-note-title">正在梳理镜元智算能力...</div>
                               <button className="onyx-runtime-welcome-note-toggle" type="button">
                                 <SvgChevronDownV2 className="h-3.5 w-3.5" />
                               </button>
                             </div>
                             <div className="onyx-runtime-welcome-note-body">
-                              The shell is ready to stream clarification steps, analytical evidence, and inline chart updates through the same message timeline.
+                              工作台已就绪，可在同一消息时间线中展示澄清步骤、分析证据和内联图表更新。
                             </div>
                           </div>
                         </OnyxDonorCardV2>
                       </div>
                     ) : !isOnyxCenterMode ? (
                       <div className="v2-runtime-empty">
-                        Try asking for a trend, variance explanation, or a chart-backed analysis.
+                        可以试着询问趋势、差异原因，或让系统生成带图表的分析。
                       </div>
                     ) : null}
                   </ThreadPrimitive.Empty>
@@ -469,7 +467,7 @@ function AskRuntimeShellSessionV2({
                   input={
                     <ComposerPrimitive.Input
                       data-testid="ask-v2-input"
-                      placeholder={isOnyxCenterMode ? 'Ask follow-up questions' : 'Ask about metrics, trends, variance, or governance evidence...'}
+                      placeholder={isOnyxCenterMode ? '继续追问' : '询问指标、趋势、差异原因或治理证据...'}
                       rows={1}
                       disabled={isStreaming}
                       className="onyx-runtime-composer-input"
@@ -485,7 +483,7 @@ function AskRuntimeShellSessionV2({
                           <SvgSearchMenuV2 className="h-4 w-4" />
                         </button>
                         <OnyxSelectButtonV2 icon={SvgHourglassV2} state="selected" variant="select-light">
-                          Deep Research
+                          深度研究
                         </OnyxSelectButtonV2>
                       </div>
                     </div>
@@ -499,7 +497,7 @@ function AskRuntimeShellSessionV2({
                         <span className="onyx-donor-composer-send-shell-wrap" data-testid="onyx-donor-composer-send-shell">
                           <ComposerPrimitive.Send asChild>
                             <button
-                              aria-label={isStreaming ? 'Stop generation' : 'Send message'}
+                              aria-label={isStreaming ? '停止生成' : '发送消息'}
                               className="onyx-send onyx-donor-composer-send"
                               data-testid="ask-v2-submit"
                               disabled={isStreaming}
@@ -522,7 +520,7 @@ function AskRuntimeShellSessionV2({
 
           {renderRail ? (
             <aside className="v2-diagnostics" data-contract={shellAnchors.askDiagnosticsDrawer}>
-              <DiagnosticsRailCardV2 title="Active Handoff">
+              <DiagnosticsRailCardV2 title="活跃交接" testId="active-handoff">
                 <div className="v2-rail-list">
                   {activeHandoffEntries.length > 0 ? (
                     activeHandoffEntries.map(([key, value]) => (
@@ -533,27 +531,27 @@ function AskRuntimeShellSessionV2({
                     ))
                   ) : (
                     <div className="v2-rail-item">
-                      <span>No active analysis handoff.</span>
+                      <span>暂无活跃分析交接。</span>
                     </div>
                   )}
                 </div>
               </DiagnosticsRailCardV2>
 
-              <DiagnosticsRailCardV2 title="Runtime Status">
+              <DiagnosticsRailCardV2 title="运行状态" testId="runtime-status">
                 {queryStatus ? <div className="v2-runtime-error">{queryStatus}</div> : null}
                 <div className="v2-rail-list">
                   <div className="v2-rail-item">
-                    <div className="v2-resource-label">Status</div>
-                    <div className="v2-resource-path">{progressLabel ?? 'Idle'}</div>
+                    <div className="v2-resource-label">状态</div>
+                    <div className="v2-resource-path">{progressLabel ?? '空闲'}</div>
                   </div>
                   <div className="v2-rail-item">
-                    <div className="v2-resource-label">Events</div>
+                    <div className="v2-resource-label">事件</div>
                     <div className="v2-resource-path">{runtimeEvents.length}</div>
                   </div>
                 </div>
               </DiagnosticsRailCardV2>
 
-              <DiagnosticsRailCardV2 title="Resource Requests">
+              <DiagnosticsRailCardV2 title="资源请求" testId="resource-requests">
                 <div className="v2-rail-list">
                   {surfaceCards.map(item => (
                     <div className="v2-rail-item" key={item.id}>

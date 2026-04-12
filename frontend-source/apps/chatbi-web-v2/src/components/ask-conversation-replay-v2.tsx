@@ -45,8 +45,8 @@ export function AskConversationReplayV2({ conversationId }: { conversationId?: s
     <section className="v2-replay-panel">
       <div className="v2-analysis-head">
         <div>
-          <div className="v2-section-title">Conversation Replay</div>
-          <div className="v2-muted">{loading ? 'Loading persisted turns...' : `Conversation ${conversationId}`}</div>
+          <div className="v2-section-title">会话回放</div>
+          <div className="v2-muted">{loading ? '正在加载历史轮次...' : `会话 ${conversationId}`}</div>
         </div>
       </div>
       {turns.length > 0 ? (
@@ -59,7 +59,7 @@ export function AskConversationReplayV2({ conversationId }: { conversationId?: s
           ))}
         </div>
       ) : !loading ? (
-        <div className="v2-muted">No persisted turns for this conversation yet.</div>
+        <div className="v2-muted">当前会话暂无历史轮次。</div>
       ) : null}
     </section>
   )

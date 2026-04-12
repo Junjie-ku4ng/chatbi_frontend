@@ -45,11 +45,11 @@ function buildSourceRailItems(input: {
   })
   items.push({
     id: conversationResource.id,
-    title: 'Conversation Sessions',
-    eyebrow: 'Workspace knowledge',
+    title: '会话记录',
+    eyebrow: '工作区知识',
     body: input.activeXpertId
-      ? `Saved Ask sessions, follow-ups, and prior reasoning context for the ${input.activeXpertId} workspace.`
-      : 'Saved Ask sessions and prior reasoning context for the default workspace.',
+      ? `${input.activeXpertId} 工作区内保存的会话、追问和历史推理上下文。`
+      : '默认工作区内保存的会话和历史推理上下文。',
     meta: conversationResource.path,
     kind: 'chat'
   })
@@ -59,9 +59,9 @@ function buildSourceRailItems(input: {
   })
   items.push({
     id: toolsetResource.id,
-    title: 'Workspace Toolset',
-    eyebrow: 'Platform adapter',
-    body: 'Operational tools, chart actions, and follow-up capabilities exposed to the live Ask runtime.',
+    title: '工作区工具集',
+    eyebrow: '平台适配',
+    body: '实时问答运行时可调用的操作工具、图表动作和追问能力。',
     meta: toolsetResource.path,
     kind: 'insight'
   })
@@ -69,9 +69,9 @@ function buildSourceRailItems(input: {
   const storiesResource = frontendPlatformAdapter.resources.build('stories')
   items.push({
     id: storiesResource.id,
-    title: 'Stories & Insight',
-    eyebrow: 'Product surface',
-    body: 'Saved narrative outputs, insight drafts, and downstream analytical surfaces that can receive Ask results.',
+    title: '故事与洞察',
+    eyebrow: '产品界面',
+    body: '可接收问答结果的叙事输出、洞察草稿和下游分析界面。',
     meta: storiesResource.path,
     kind: 'document'
   })
@@ -82,9 +82,9 @@ function buildSourceRailItems(input: {
     })
     items.push({
       id: analysisConversationResource.id,
-      title: 'Current Conversation',
-      eyebrow: 'Live conversation state',
-      body: 'Current conversation record, runtime state, and message timeline backing the active Ask session.',
+      title: '当前会话',
+      eyebrow: '实时会话状态',
+      body: '支撑当前问答会话的会话记录、运行状态和消息时间线。',
       meta: analysisConversationResource.path,
       kind: 'search'
     })
@@ -93,9 +93,9 @@ function buildSourceRailItems(input: {
   if (input.queryLogId) {
     items.push({
       id: 'query-log',
-      title: 'Query Log Reference',
-      eyebrow: 'Evidence link',
-      body: 'Linked analytical evidence captured during the current Ask flow.',
+      title: '查询日志引用',
+      eyebrow: '证据链接',
+      body: '当前问答流程中捕获的关联分析证据。',
       meta: input.queryLogId,
       kind: 'document'
     })
@@ -104,9 +104,9 @@ function buildSourceRailItems(input: {
   if (input.traceKey) {
     items.push({
       id: 'trace-key',
-      title: 'Trace Reference',
-      eyebrow: 'Ops trace',
-      body: 'Operational execution trace associated with this Ask response and chart rendering path.',
+      title: '链路追踪引用',
+      eyebrow: '运行追踪',
+      body: '与本次问答响应和图表渲染路径关联的执行追踪。',
       meta: input.traceKey,
       kind: 'mail'
     })
@@ -122,6 +122,7 @@ export function AskWorkspaceClientV2({
   shellAnchors
 }: AskWorkspaceClientV2Props) {
   const [conversationId, setConversationId] = useState<string | undefined>(initialConversationId)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
   const railItems = useMemo(
     () =>
@@ -138,13 +139,18 @@ export function AskWorkspaceClientV2({
 
   return (
     <OnyxAppFrameV2
+      sidebarCollapsed={sidebarCollapsed}
       sidebar={
         <OnyxSidebarV2
           key={sidebarRenderKey}
           activeXpertId={activeXpertId}
           activeConversationId={conversationId}
+          folded={sidebarCollapsed}
           preferActiveConversationFallback={preferActiveConversationFallback}
           handoff={handoff}
+          onToggleSidebar={() => {
+            setSidebarCollapsed(current => !current)
+          }}
         />
       }
       main={

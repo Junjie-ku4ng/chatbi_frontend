@@ -89,7 +89,7 @@ export function AskMessageFeedbackV2({
     >
       <div className="onyx-donor-toolbar-actions flex items-center gap-1" data-testid="onyx-donor-toolbar-actions">
         <OnyxSelectButtonV2
-          aria-label="Copy answer"
+          aria-label="复制回答"
           data-testid="AgentMessage/copy-button"
           icon={SvgCopyV2}
           onClick={() => {
@@ -105,7 +105,7 @@ export function AskMessageFeedbackV2({
         <OnyxSelectButtonV2
           data-rating="LIKE"
           data-testid="AgentMessage/like-button"
-          aria-label="Helpful"
+          aria-label="有帮助"
           disabled={pending}
           icon={SvgThumbUpV2}
           onClick={() => {
@@ -118,7 +118,7 @@ export function AskMessageFeedbackV2({
         <OnyxSelectButtonV2
           data-rating="DISLIKE"
           data-testid="AgentMessage/dislike-button"
-          aria-label="Needs work"
+          aria-label="需要改进"
           disabled={pending}
           icon={SvgThumbDownV2}
           onClick={() => {
@@ -130,7 +130,7 @@ export function AskMessageFeedbackV2({
         />
         <div data-testid="AgentMessage/regenerate">
           <OnyxSelectButtonV2
-            aria-label="Retry answer"
+            aria-label="重新生成"
             icon={SvgRotateV2}
             onClick={() => {}}
             size="sm"
@@ -142,7 +142,7 @@ export function AskMessageFeedbackV2({
       {sources.length > 0 ? (
         <div data-testid="onyx-donor-toolbar-sources">
           <OnyxSelectButtonV2
-            aria-label="Sources"
+            aria-label="来源"
             onClick={() => {
               toggleMessageSources({
                 messageId,
@@ -153,7 +153,7 @@ export function AskMessageFeedbackV2({
             state={isSourceSelected ? 'selected' : 'empty'}
             variant="select-light"
           >
-            Sources
+            来源
           </OnyxSelectButtonV2>
         </div>
       ) : null}

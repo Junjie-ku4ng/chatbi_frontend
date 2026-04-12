@@ -76,7 +76,7 @@ export function OnyxSourceRailV2({ items }: { items: SourceRailItem[] }) {
         <div className="onyx-native-donor-source-rail-stack" data-testid="onyx-native-donor-source-rail-stack">
           <div className="onyx-source-rail-v2-header onyx-donor-source-rail-header" data-testid="onyx-donor-source-rail-header">
             <span className="onyx-native-donor-source-rail-title" data-testid="onyx-native-donor-source-rail-title">
-              All Sources
+              全部来源
             </span>
             <span className="onyx-native-donor-source-rail-arrow" data-testid="onyx-native-donor-source-rail-arrow">
               <SvgArrowRightV2 className="h-4 w-4" />
@@ -89,9 +89,9 @@ export function OnyxSourceRailV2({ items }: { items: SourceRailItem[] }) {
               <SourceRailCard
                 item={{
                   id: 'empty-source-rail',
-                  title: 'No sources yet',
-                  eyebrow: 'Run Ask to populate the rail',
-                  body: 'Run an Ask query to populate sources, traces, and query references.',
+                  title: '暂无来源',
+                  eyebrow: '运行问答后展示来源',
+                  body: '发起一次问答后，这里会展示来源、追踪和查询引用。',
                   kind: 'search'
                 }}
               />

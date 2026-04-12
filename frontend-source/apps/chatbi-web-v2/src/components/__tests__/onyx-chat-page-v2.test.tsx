@@ -24,7 +24,7 @@ vi.mock('../ask-runtime-shell-v2', () => ({
     }
   }) => {
     askRuntimeShellMock(props)
-    return React.createElement('div', { 'data-testid': 'onyx-chat-runtime-shell' }, 'Ask follow-up questions')
+    return React.createElement('div', { 'data-testid': 'onyx-chat-runtime-shell' }, '继续追问')
   }
 }))
 
@@ -43,7 +43,7 @@ describe('OnyxChatPageV2', () => {
       />,
     )
 
-    expect(markup).toContain('Chat')
+    expect(markup).toContain('对话')
     expect(markup).toContain('data-testid="onyx-chat-runtime-shell"')
     expect(markup).not.toContain('Live Ask Runtime')
     expect(markup).not.toContain('Streaming Diagnostics')

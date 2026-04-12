@@ -60,8 +60,8 @@ async function renderInteractionSurface() {
           sources={[
             {
               id: 'query-log:query-log-1',
-              title: 'Query Log Reference',
-              body: 'Analytical evidence captured for this answer.',
+              title: '查询日志引用',
+              body: '本次回答捕获的分析证据。',
               meta: 'query-log-1',
               kind: 'document'
             }
@@ -71,8 +71,8 @@ async function renderInteractionSurface() {
           items={[
             {
               id: 'fallback-session',
-              title: 'Conversation Sessions',
-              body: 'Fallback workspace card',
+              title: '会话记录',
+              body: '备用工作区卡片',
               kind: 'chat'
             }
           ]}
@@ -90,13 +90,13 @@ describe('chat source rail interaction', () => {
     getMessageFeedbackMock.mockResolvedValue(null)
 
     const container = await renderInteractionSurface()
-    const sourceButton = Array.from(container.querySelectorAll('button')).find(button => button.textContent?.trim() === 'Sources')
+    const sourceButton = Array.from(container.querySelectorAll('button')).find(button => button.textContent?.trim() === '来源')
     const sourceRail = container.querySelector('[data-testid="onyx-donor-source-rail"]')
 
     expect(sourceButton).toBeTruthy()
     expect(sourceRail?.className).toContain('onyx-donor-source-rail')
-    expect(container.textContent).toContain('Conversation Sessions')
-    expect(container.textContent).not.toContain('Query Log Reference')
+    expect(container.textContent).toContain('会话记录')
+    expect(container.textContent).not.toContain('查询日志引用')
 
     await act(async () => {
       sourceButton?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
@@ -104,8 +104,8 @@ describe('chat source rail interaction', () => {
     })
 
     expect(sourceButton?.getAttribute('data-interactive-state')).toBe('selected')
-    expect(container.textContent).toContain('Query Log Reference')
-    expect(container.textContent).not.toContain('Conversation Sessions')
+    expect(container.textContent).toContain('查询日志引用')
+    expect(container.textContent).not.toContain('会话记录')
     expect(container.querySelector('[data-testid="onyx-source-rail-card"]')?.className).toContain('onyx-donor-source-card')
 
     await act(async () => {
@@ -114,6 +114,6 @@ describe('chat source rail interaction', () => {
     })
 
     expect(sourceButton?.getAttribute('data-interactive-state')).toBe('empty')
-    expect(container.textContent).toContain('Conversation Sessions')
+    expect(container.textContent).toContain('会话记录')
   })
 })

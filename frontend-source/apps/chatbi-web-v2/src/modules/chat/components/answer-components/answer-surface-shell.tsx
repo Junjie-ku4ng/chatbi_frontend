@@ -178,7 +178,7 @@ export function AnswerSurfaceShell(props: {
               {queryLogId ? (
                 <span data-testid="answer-surface-query-log-id" className="onyx-donor-answer-surface-meta-chip">
                   <span data-testid="answer-surface-query-log-id-label" className="onyx-donor-answer-surface-meta-label">
-                    Query Log:
+                    查询日志：
                   </span>{' '}
                   <span data-testid="answer-surface-query-log-id-value" className="onyx-donor-answer-surface-meta-value">
                     {queryLogId}
@@ -188,7 +188,7 @@ export function AnswerSurfaceShell(props: {
               {traceKey ? (
                 <span data-testid="answer-surface-trace-key" className="onyx-donor-answer-surface-meta-chip">
                   <span data-testid="answer-surface-trace-key-label" className="onyx-donor-answer-surface-meta-label">
-                    Trace:
+                    追踪：
                   </span>{' '}
                   <span data-testid="answer-surface-trace-key-value" className="onyx-donor-answer-surface-meta-value">
                     {traceKey}
@@ -229,7 +229,7 @@ export function AnswerSurfaceShell(props: {
           className="chat-assistant-answer-action onyx-donor-answer-surface-action"
           onClick={state.closeFullscreen}
         >
-          Close
+          关闭
         </button>
       </div>
       {surface}

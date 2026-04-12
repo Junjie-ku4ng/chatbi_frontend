@@ -459,7 +459,7 @@ describe('ask message renderer v2', () => {
     const markup = renderToStaticMarkup(<AssistantMessageCardV2 />)
 
     expect(markup).toContain('data-testid="onyx-runtime-shell-header"')
-    expect(markup).toContain('Executing 执行月度聚合')
+    expect(markup).toContain('正在执行 执行月度聚合')
   })
 
   it('normalizes context resolution runtime headers into donor activity language', () => {
@@ -494,7 +494,7 @@ describe('ask message renderer v2', () => {
     const markup = renderToStaticMarkup(<AssistantMessageCardV2 />)
 
     expect(markup).toContain('data-testid="onyx-runtime-shell-header"')
-    expect(markup).toContain('Resolving context')
+    expect(markup).toContain('正在解析上下文')
   })
 
   it('normalizes executed query runtime headers into donor activity language', () => {
@@ -529,8 +529,8 @@ describe('ask message renderer v2', () => {
     const markup = renderToStaticMarkup(<AssistantMessageCardV2 />)
 
     expect(markup).toContain('data-testid="onyx-runtime-shell-header"')
-    expect(markup).toContain('Executing query')
-    expect(markup).not.toContain('Executing query executed')
+    expect(markup).toContain('正在执行查询')
+    expect(markup).not.toContain('正在执行 query executed')
   })
 
   it('renders compact runtime step rows instead of stacked dashboard cards', () => {
@@ -684,7 +684,7 @@ describe('ask message renderer v2', () => {
 
     expect(markup.indexOf('制定执行计划')).toBeLessThan(finalAnswerIndex)
     expect(markup.indexOf('执行月度聚合')).toBeGreaterThan(finalAnswerIndex)
-    expect(markup.indexOf('Streaming…')).toBeGreaterThan(finalAnswerIndex)
+    expect(markup.indexOf('正在生成...')).toBeGreaterThan(finalAnswerIndex)
     expect(markup).toContain('data-section-kind="timeline"')
     expect(markup).toContain('data-testid="onyx-donor-inline-runtime-step"')
     expect(markup).toContain('data-testid="onyx-donor-runtime-terminal-renderer"')

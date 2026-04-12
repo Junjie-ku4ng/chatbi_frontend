@@ -29,10 +29,6 @@ function asFiniteNumber(value: unknown) {
   return Number.isFinite(next) ? next : undefined
 }
 
-function capitalize(input: string) {
-  return input.length > 0 ? `${input.slice(0, 1).toUpperCase()}${input.slice(1)}` : input
-}
-
 function pushUnique(items: ChatSourceItem[], item: ChatSourceItem | null) {
   if (!item || items.some(existing => existing.id === item.id)) {
     return
@@ -43,9 +39,9 @@ function pushUnique(items: ChatSourceItem[], item: ChatSourceItem | null) {
 function buildQueryLogSource(queryLogId: string): ChatSourceItem {
   return {
     id: `query-log:${queryLogId}`,
-    title: 'Query Log Reference',
-    eyebrow: 'Evidence link',
-    body: 'Analytical evidence captured for this answer and reusable across downstream analysis surfaces.',
+    title: '查询日志引用',
+    eyebrow: '证据链接',
+    body: '本次回答捕获的分析证据，可用于后续分析界面。',
     meta: queryLogId,
     kind: 'document'
   }
@@ -54,9 +50,9 @@ function buildQueryLogSource(queryLogId: string): ChatSourceItem {
 function buildTraceSource(traceKey: string): ChatSourceItem {
   return {
     id: `trace:${traceKey}`,
-    title: 'Trace Reference',
-    eyebrow: 'Ops trace',
-    body: 'Execution trace for this answer, including runtime steps and chart rendering provenance.',
+    title: '链路追踪引用',
+    eyebrow: '运行追踪',
+    body: '本次回答的执行追踪，包含运行步骤和图表渲染来源。',
     meta: traceKey,
     kind: 'mail'
   }
@@ -72,12 +68,12 @@ function buildResultSetSource(record: Record<string, unknown>): ChatSourceItem {
 
   return {
     id: `result-set:${queryLogId ?? traceKey ?? cube ?? 'analysis'}`,
-    title: cube ? `${cube} Result Set` : 'Result Set',
-    eyebrow: visualType ? `${capitalize(visualType)} analysis` : 'Analysis result',
+    title: cube ? `${cube} 结果集` : '结果集',
+    eyebrow: visualType ? `${visualType} 分析` : '分析结果',
     body:
       rowCount !== undefined || colCount !== undefined
-        ? `Structured analytical result with ${rowCount ?? 0} rows and ${colCount ?? 0} columns, ready for chart and table rendering.`
-        : 'Structured analytical result ready for chart and table rendering.',
+        ? `结构化分析结果包含 ${rowCount ?? 0} 行和 ${colCount ?? 0} 列，可用于图表和表格渲染。`
+        : '结构化分析结果已可用于图表和表格渲染。',
     meta: queryLogId ?? traceKey,
     kind: 'search'
   }
@@ -91,9 +87,9 @@ function buildDiagnosticSource(record: Record<string, unknown>): ChatSourceItem 
 
   return {
     id: `${kind}:${asString(record.traceKey) ?? asString(record.queryLogId) ?? 'analysis'}`,
-    title: kind === 'planning_diagnostics' ? 'Planning Diagnostics' : 'Diagnostic Evidence',
-    eyebrow: 'Runtime evidence',
-    body: 'Structured runtime evidence captured during answer generation and available for deeper inspection.',
+    title: kind === 'planning_diagnostics' ? '规划诊断' : '诊断证据',
+    eyebrow: '运行证据',
+    body: '回答生成过程中捕获的结构化运行证据，可用于进一步检查。',
     meta: asString(record.traceKey) ?? asString(record.queryLogId),
     kind: 'insight'
   }

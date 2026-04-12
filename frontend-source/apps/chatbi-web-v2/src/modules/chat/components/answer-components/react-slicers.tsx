@@ -390,7 +390,7 @@ export function ReactSlicers(props: {
       className="rounded-2xl border border-slate-200 bg-slate-50 p-3"
       data-testid="react-slicers"
     >
-      <div className="mb-3 text-sm font-semibold text-slate-800">Slicers</div>
+      <div className="mb-3 text-sm font-semibold text-slate-800">筛选器</div>
 
       {props.editable ? (
         <div className="mb-3 space-y-2">
@@ -406,7 +406,7 @@ export function ReactSlicers(props: {
             }}
             type="button"
           >
-            Add
+            添加
           </button>
 
           {isCreatorOpen ? (
@@ -423,7 +423,7 @@ export function ReactSlicers(props: {
                 onInput={event => {
                   setSearch((event.target as HTMLInputElement).value)
                 }}
-                placeholder="Search dimensions or variables"
+                placeholder="搜索维度或变量"
                 value={search}
               />
 

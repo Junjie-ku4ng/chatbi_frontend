@@ -260,26 +260,26 @@ describe('AnalysisComponentCardV2', () => {
     expect(getByTestId(container, 'analysis-component-card-v2-header').className).toContain('onyx-donor-analysis-card-shell')
     expect(container.querySelector('.onyx-donor-answer-surface')).toBeTruthy()
     expect(getByTestId(container, 'analysis-component-card-v2-title').textContent).toBe('Revenue trend')
-    expect(getByTestId(container, 'analysis-component-card-v2-surface-kind').textContent).toContain('Table surface')
+    expect(getByTestId(container, 'analysis-component-card-v2-surface-kind').textContent).toContain('表格分析')
     expect(getByTestId(container, 'analysis-component-card-v2-context').textContent).toContain('Finance')
     expect(getByTestId(container, 'analysis-component-card-v2-context').textContent).toContain('Revenue')
     expect(getByTestId(container, 'analysis-component-card-v2-context').textContent).toContain('Month')
 
-    expect(getButton(container, 'Table')).toBeTruthy()
-    expect(getButton(container, 'Chart')).toBeTruthy()
-    expect(getButton(container, 'Sort')).toBeTruthy()
-    expect(getButton(container, 'Top')).toBeTruthy()
-    expect(getButton(container, 'Slicer')).toBeTruthy()
-    expect(getButton(container, 'Explain')).toBeTruthy()
-    expect(getButton(container, 'Open Explorer')).toBeTruthy()
-    expect(getButton(container, 'Open Analysis')).toBeTruthy()
-    expect(getButton(container, 'Explore')).toBeTruthy()
-    expect(getButton(container, 'Open Canvas')).toBeTruthy()
-    expect(getButton(container, 'Add to Story')).toBeTruthy()
-    expect(getButton(container, 'Fullscreen')).toBeTruthy()
+    expect(getButton(container, '表格')).toBeTruthy()
+    expect(getButton(container, '图表')).toBeTruthy()
+    expect(getButton(container, '排序')).toBeTruthy()
+    expect(getButton(container, '前 N')).toBeTruthy()
+    expect(getButton(container, '筛选')).toBeTruthy()
+    expect(getButton(container, '解释')).toBeTruthy()
+    expect(getButton(container, '打开探索器')).toBeTruthy()
+    expect(getButton(container, '打开分析')).toBeTruthy()
+    expect(getButton(container, '探索')).toBeTruthy()
+    expect(getButton(container, '打开画布')).toBeTruthy()
+    expect(getButton(container, '加入故事')).toBeTruthy()
+    expect(getButton(container, '全屏')).toBeTruthy()
 
     await act(async () => {
-      ;(getButton(container, 'Open Explorer') as HTMLButtonElement).click()
+      ;(getButton(container, '打开探索器') as HTMLButtonElement).click()
       await Promise.resolve()
     })
 
@@ -287,14 +287,14 @@ describe('AnalysisComponentCardV2', () => {
     const explorerShell = getByTestId(container, 'analysis-explorer-shell-v2')
     const explorerDialog = getByTestId(container, 'analysis-explorer-dialog-v2')
     expect(explorerDialog.className).toContain('onyx-donor-answer-surface-dialog')
-    expect(explorerShell.textContent).toContain('Open Analysis')
-    expect(explorerShell.textContent).toContain('Open Canvas')
-    expect(explorerShell.textContent).toContain('Add to Story')
-    expect(explorerDialog.textContent).toContain('Apply to card')
-    expect(explorerDialog.textContent).toContain('Reset changes')
+    expect(explorerShell.textContent).toContain('打开分析')
+    expect(explorerShell.textContent).toContain('打开画布')
+    expect(explorerShell.textContent).toContain('加入故事')
+    expect(explorerDialog.textContent).toContain('应用到卡片')
+    expect(explorerDialog.textContent).toContain('重置更改')
 
     await act(async () => {
-      ;(getButtonWithin(explorerShell, 'Explain') as HTMLButtonElement).click()
+      ;(getButtonWithin(explorerShell, '解释') as HTMLButtonElement).click()
       await Promise.resolve()
     })
 
@@ -302,21 +302,21 @@ describe('AnalysisComponentCardV2', () => {
     expect(getByTestId(explorerShell, 'answer-evidence-drawer').textContent).toContain('Revenue trend result')
 
     await act(async () => {
-      ;(getButton(container, 'Close Explorer') as HTMLButtonElement).click()
+      ;(getButton(container, '关闭探索器') as HTMLButtonElement).click()
       await Promise.resolve()
     })
 
     expect(container.querySelector('[data-testid="analysis-explorer-dialog-v2"]')).toBeNull()
 
     await act(async () => {
-      ;(getButton(container, 'Open Explorer') as HTMLButtonElement).click()
+      ;(getButton(container, '打开探索器') as HTMLButtonElement).click()
       await Promise.resolve()
     })
 
     const explorerApplyShell = getByTestId(container, 'analysis-explorer-shell-v2')
 
     await act(async () => {
-      ;(getButtonWithin(explorerApplyShell, 'Top') as HTMLButtonElement).click()
+      ;(getButtonWithin(explorerApplyShell, '前 N') as HTMLButtonElement).click()
       await Promise.resolve()
     })
 
@@ -326,50 +326,50 @@ describe('AnalysisComponentCardV2', () => {
     expect((getByTestId(explorerApplyShell, 'answer-sort-top-limit') as HTMLInputElement).className).toContain('onyx-donor-answer-panel-control')
 
     await act(async () => {
-      ;(getButtonWithin(explorerApplyShell, 'Top 5') as HTMLButtonElement).click()
+      ;(getButtonWithin(explorerApplyShell, '前 5') as HTMLButtonElement).click()
       await Promise.resolve()
     })
 
     await act(async () => {
-      ;(getButton(container, 'Apply to card') as HTMLButtonElement).click()
+      ;(getButton(container, '应用到卡片') as HTMLButtonElement).click()
       await Promise.resolve()
     })
 
-    expect(getByTestId(container, 'analysis-component-card-v2-draft-summary').textContent).toContain('Top 5')
+    expect(getByTestId(container, 'analysis-component-card-v2-draft-summary').textContent).toContain('前 5')
     expect(container.querySelector('[data-testid="analysis-explorer-dialog-v2"]')).toBeNull()
 
     await act(async () => {
-      ;(getButton(container, 'Open Explorer') as HTMLButtonElement).click()
+      ;(getButton(container, '打开探索器') as HTMLButtonElement).click()
       await Promise.resolve()
     })
 
     const reopenedExplorerShell = getByTestId(container, 'analysis-explorer-shell-v2')
 
     await act(async () => {
-      ;(getButtonWithin(reopenedExplorerShell, 'Top') as HTMLButtonElement).click()
+      ;(getButtonWithin(reopenedExplorerShell, '前 N') as HTMLButtonElement).click()
       await Promise.resolve()
     })
 
     await act(async () => {
-      ;(getButtonWithin(reopenedExplorerShell, 'Top 20') as HTMLButtonElement).click()
+      ;(getButtonWithin(reopenedExplorerShell, '前 20') as HTMLButtonElement).click()
       await Promise.resolve()
     })
 
     await act(async () => {
-      ;(getButton(container, 'Reset changes') as HTMLButtonElement).click()
+      ;(getButton(container, '重置更改') as HTMLButtonElement).click()
       await Promise.resolve()
     })
 
     await act(async () => {
-      ;(getButton(container, 'Apply to card') as HTMLButtonElement).click()
+      ;(getButton(container, '应用到卡片') as HTMLButtonElement).click()
       await Promise.resolve()
     })
 
-    expect(getByTestId(container, 'analysis-component-card-v2-draft-summary').textContent).toContain('Top 5')
-    expect(getByTestId(container, 'analysis-component-card-v2-draft-summary').textContent).not.toContain('Top 20')
+    expect(getByTestId(container, 'analysis-component-card-v2-draft-summary').textContent).toContain('前 5')
+    expect(getByTestId(container, 'analysis-component-card-v2-draft-summary').textContent).not.toContain('前 20')
 
     await act(async () => {
-      ;(getButton(container, 'Slicer') as HTMLButtonElement).click()
+      ;(getButton(container, '筛选') as HTMLButtonElement).click()
       await Promise.resolve()
     })
 
@@ -378,7 +378,7 @@ describe('AnalysisComponentCardV2', () => {
     expect((getByTestId(container, 'answer-slicer-member') as HTMLInputElement).className).toContain('onyx-donor-answer-panel-control')
 
     await act(async () => {
-      ;(getButton(container, 'Explain') as HTMLButtonElement).click()
+      ;(getButton(container, '解释') as HTMLButtonElement).click()
       await Promise.resolve()
     })
 
@@ -387,7 +387,7 @@ describe('AnalysisComponentCardV2', () => {
     expect(getByTestId(container, 'answer-evidence-open-trace').getAttribute('href')).toBe('/ops/traces/trace-1')
 
     await act(async () => {
-      ;(getButton(container, 'Chart') as HTMLButtonElement).click()
+      ;(getButton(container, '图表') as HTMLButtonElement).click()
       await Promise.resolve()
     })
 
@@ -395,21 +395,21 @@ describe('AnalysisComponentCardV2', () => {
     expect(getByTestId(container, 'answer-surface-body-chart').className).toContain('onyx-donor-answer-surface-body-chart')
 
     await act(async () => {
-      ;(getButton(container, 'Explore') as HTMLButtonElement).click()
+      ;(getButton(container, '探索') as HTMLButtonElement).click()
       await Promise.resolve()
     })
 
     expect(onApplyPrompt).toHaveBeenCalledWith('请继续探索当前结果，并优先从新的维度、异常点或趋势变化展开。')
 
     await act(async () => {
-      ;(getButton(container, 'Open Canvas') as HTMLButtonElement).click()
+      ;(getButton(container, '打开画布') as HTMLButtonElement).click()
       await Promise.resolve()
     })
 
     expect(createStoryMock).toHaveBeenCalledWith(
       expect.objectContaining({
         modelId: 'model-1',
-        title: 'Revenue trend canvas'
+        title: 'Revenue trend 画布'
       })
     )
     expect(addStoryWidgetMock).toHaveBeenCalledWith(
@@ -421,7 +421,7 @@ describe('AnalysisComponentCardV2', () => {
     expect(openSpy).toHaveBeenCalledWith('/project/story-1/designer', '_blank', 'noopener,noreferrer')
 
     await act(async () => {
-      ;(getButton(container, 'Add to Story') as HTMLButtonElement).click()
+      ;(getButton(container, '加入故事') as HTMLButtonElement).click()
       await Promise.resolve()
     })
 

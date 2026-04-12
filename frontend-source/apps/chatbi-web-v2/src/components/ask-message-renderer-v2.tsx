@@ -17,7 +17,7 @@ import {
 import { AskMessageFeedbackV2 } from './ask-message-feedback-v2'
 import { useAskRuntimeContextV2 } from './ask-runtime-context-v2'
 import { OnyxDonorCardV2 } from './onyx-donor/onyx-donor-card-v2'
-import { SvgOnyxMarkV2 } from './onyx/icons'
+import { SvgChatbiMarkV2 } from './onyx/icons'
 
 type MessagePart = {
   type: string
@@ -111,7 +111,7 @@ export function AssistantMessageCardV2() {
           message.status?.type === 'running'
             ? {
                 status: 'running',
-                label: 'Streaming…'
+                label: '正在生成...'
               }
             : null
       }),
@@ -137,7 +137,7 @@ export function AssistantMessageCardV2() {
           className="onyx-donor-message-avatar-column flex h-6 w-6 shrink-0 items-start justify-center pt-1 text-text-01"
           data-testid="onyx-donor-message-avatar-column"
         >
-          <SvgOnyxMarkV2 size={18} />
+          <SvgChatbiMarkV2 size={18} />
         </div>
         <div
           className="onyx-donor-message-main-column flex min-w-0 max-w-[720px] flex-1 flex-col gap-3"

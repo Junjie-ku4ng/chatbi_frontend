@@ -26,7 +26,7 @@ export function AnswerSlicerPanel(props: {
 
   return (
     <section className="chat-assistant-component-panel onyx-donor-answer-panel" data-testid="answer-slicer-panel">
-      <strong>Slicers</strong>
+      <strong>筛选器</strong>
       <select
         data-testid="answer-slicer-dimension"
         value={dimension}
@@ -47,7 +47,7 @@ export function AnswerSlicerPanel(props: {
         }
         className="ask-analysis-control onyx-donor-answer-panel-control"
       >
-        {props.dimensions.length === 0 ? <option value="">No dimension</option> : null}
+        {props.dimensions.length === 0 ? <option value="">无维度</option> : null}
         {props.dimensions.map(item => (
           <option key={item} value={item}>
             {item}
@@ -59,7 +59,7 @@ export function AnswerSlicerPanel(props: {
         value={member}
         onInput={event => applyMemberChange((event.target as HTMLInputElement).value)}
         onChange={event => applyMemberChange(event.target.value)}
-        placeholder="Member value"
+        placeholder="成员值"
         className="ask-analysis-control onyx-donor-answer-panel-control"
       />
     </section>

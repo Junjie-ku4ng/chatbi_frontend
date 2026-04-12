@@ -34,7 +34,7 @@ export function ReactBreadcrumbBar({
       className={`flex items-center gap-2 rounded-xl border border-slate-200/80 bg-slate-50 px-3 py-2 ${disabled ? 'opacity-60' : ''}`}
       data-testid="react-breadcrumb-bar"
     >
-      <nav className="flex flex-1 flex-wrap items-center gap-2" aria-label="Drill breadcrumbs">
+      <nav className="flex flex-1 flex-wrap items-center gap-2" aria-label="下钻路径">
         {steps.map((step, index) => (
           <button
             key={`${step.label}-${index}`}
@@ -61,7 +61,7 @@ export function ReactBreadcrumbBar({
         onClick={close}
         type="button"
       >
-        Close
+        关闭
       </button>
     </div>
   )

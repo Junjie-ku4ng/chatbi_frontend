@@ -12,14 +12,14 @@ describe('Onyx shell parity', () => {
       />,
     )
 
-    expect(markup).toContain('New Session')
-    expect(markup).toContain('Chat')
-    expect(markup).toContain('Agents')
-    expect(markup).toContain('Sales Assistant')
-    expect(markup).toContain('Deep Research')
-    expect(markup).toContain('All Sources')
-    expect(markup).toContain('Sessions')
-    expect(markup).toContain('Alice')
+    expect(markup).toContain('新建会话')
+    expect(markup).toContain('对话')
+    expect(markup).toContain('智能体')
+    expect(markup).toContain('销售助手')
+    expect(markup).toContain('深度研究')
+    expect(markup).toContain('全部来源')
+    expect(markup).toContain('会话')
+    expect(markup).toContain('用户')
     expect(markup).not.toContain('Onyx donor shell bound to the platform adapter.')
     expect(markup).not.toContain('Pinned Workflows')
     expect(markup).not.toContain('Streaming Diagnostics')
@@ -36,9 +36,9 @@ describe('Onyx shell parity', () => {
       />,
     )
 
-    expect(markup).toContain('Loading conversation history…')
-    expect(markup).toContain('All Sources')
-    expect(markup).not.toContain('Deep Research')
+    expect(markup).toContain('正在加载会话历史...')
+    expect(markup).toContain('全部来源')
+    expect(markup).not.toContain('深度研究')
   })
 
   it('uses donor-style session placeholders instead of the old workspace placeholder', () => {
@@ -48,8 +48,8 @@ describe('Onyx shell parity', () => {
       />,
     )
 
-    expect(markup).toContain('Summarize Most Recent 3...')
-    expect(markup).toContain('Onyx AI Latest News')
+    expect(markup).toContain('最近三次对话摘要')
+    expect(markup).toContain('镜元智算最新动态')
     expect(markup).toContain('data-testid="onyx-source-rail-card"')
     expect(markup).not.toContain('No workspace selected')
     expect(markup).not.toContain('Bind an xpertId to load saved conversations.')

@@ -7,7 +7,13 @@ function formatViewLabel(view: AnswerSurfaceView) {
   if (view === 'kpi') {
     return 'KPI'
   }
-  return view.charAt(0).toUpperCase() + view.slice(1)
+  if (view === 'chart') {
+    return '图表'
+  }
+  if (view === 'table') {
+    return '表格'
+  }
+  return view
 }
 
 function renderAction(
@@ -89,67 +95,67 @@ export function AnswerSurfaceToolbar(props: {
       })
     ),
     props.interaction?.sort?.enabled
-      ? renderAction('answer-surface-sort', 'Sort', {
+      ? renderAction('answer-surface-sort', '排序', {
           active: props.activePanel === 'sort',
           onClick: () => props.onTogglePanel('sort'),
           variant: 'panel'
         })
       : null,
     props.interaction?.ranking?.enabled
-      ? renderAction('answer-surface-top', 'Top', {
+      ? renderAction('answer-surface-top', '前 N', {
           active: props.activePanel === 'top',
           onClick: () => props.onTogglePanel('top'),
           variant: 'panel'
         })
       : null,
     props.interaction?.slicers?.enabled
-      ? renderAction('answer-surface-slicer', 'Slicer', {
+      ? renderAction('answer-surface-slicer', '筛选', {
           active: props.activePanel === 'slicer',
           onClick: () => props.onTogglePanel('slicer'),
           variant: 'panel'
         })
       : null,
     props.interaction?.explain?.enabled
-      ? renderAction('answer-surface-explain', 'Explain', {
+      ? renderAction('answer-surface-explain', '解释', {
           active: props.activePanel === 'explain',
           onClick: () => props.onTogglePanel('explain'),
           variant: 'panel'
         })
       : null,
     props.openExplorerHref || props.onOpenExplorer
-      ? renderAction('answer-surface-open-explorer', 'Open Explorer', {
+      ? renderAction('answer-surface-open-explorer', '打开探索器', {
           href: props.openExplorerHref,
           onClick: props.onOpenExplorer,
           variant: 'link'
         })
       : null,
     props.openAnalysisHref || props.onOpenAnalysis
-      ? renderAction('answer-surface-open-analysis', 'Open Analysis', {
+      ? renderAction('answer-surface-open-analysis', '打开分析', {
           href: props.openAnalysisHref,
           onClick: props.onOpenAnalysis,
           variant: 'link'
         })
       : null,
     props.onExplore
-      ? renderAction('answer-surface-explore', 'Explore', {
+      ? renderAction('answer-surface-explore', '探索', {
           onClick: props.onExplore,
           variant: 'utility'
         })
       : null,
     props.onOpenCanvas
-      ? renderAction('answer-surface-open-canvas', 'Open Canvas', {
+      ? renderAction('answer-surface-open-canvas', '打开画布', {
           onClick: props.onOpenCanvas,
           variant: 'utility'
         })
       : null,
     props.interaction?.story?.enabled && props.onAddToStory
-      ? renderAction('answer-surface-add-to-story', 'Add to Story', {
+      ? renderAction('answer-surface-add-to-story', '加入故事', {
           onClick: props.onAddToStory,
           variant: 'utility'
         })
       : null,
     props.interaction?.fullscreen?.enabled && props.onFullscreen
-      ? renderAction('answer-surface-fullscreen', 'Fullscreen', {
+      ? renderAction('answer-surface-fullscreen', '全屏', {
           onClick: props.onFullscreen,
           variant: 'utility'
         })

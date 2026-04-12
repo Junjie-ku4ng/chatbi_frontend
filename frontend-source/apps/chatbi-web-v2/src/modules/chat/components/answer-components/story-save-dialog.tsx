@@ -28,7 +28,7 @@ export function StorySaveDialog(props: StorySaveDialogProps) {
     const defaultTitle =
       (typeof props.payload.interaction?.story?.title === 'string' && props.payload.interaction.story.title.trim()) ||
       (typeof props.payload.label === 'string' && props.payload.label.trim()) ||
-      'Analysis result'
+      '分析结果'
 
     setStoryTitle(defaultTitle)
     setStorySummary('')
@@ -58,9 +58,9 @@ export function StorySaveDialog(props: StorySaveDialogProps) {
         widgetTitle
       })
       setSavedStoryId(result.story.id)
-      setStatus(`Story saved (${result.story.id})`)
+      setStatus(`故事已保存（${result.story.id}）`)
     } catch (error) {
-      setStatus(error instanceof Error ? error.message : 'Story save failed')
+      setStatus(error instanceof Error ? error.message : '保存故事失败')
     } finally {
       setIsSaving(false)
     }
@@ -80,7 +80,7 @@ export function StorySaveDialog(props: StorySaveDialogProps) {
           className="chat-assistant-answer-action onyx-donor-answer-surface-action"
           onClick={props.onClose}
         >
-          Close
+          关闭
         </button>
       </div>
       <form
@@ -88,35 +88,35 @@ export function StorySaveDialog(props: StorySaveDialogProps) {
         onSubmit={handleSubmit}
         style={{ display: 'grid', gap: 12 }}
       >
-        <strong>Add to Story</strong>
+        <strong>加入故事</strong>
         <label className="onyx-donor-story-save-label" style={{ display: 'grid', gap: 6 }}>
-          <span>Story Title</span>
+          <span>故事标题</span>
           <input
             className="onyx-donor-story-save-input"
             data-testid="answer-story-save-title"
             value={storyTitle}
             onChange={event => setStoryTitle(event.target.value)}
-            placeholder="Story title"
+            placeholder="故事标题"
           />
         </label>
         <label className="onyx-donor-story-save-label" style={{ display: 'grid', gap: 6 }}>
-          <span>Story Summary</span>
+          <span>故事摘要</span>
           <input
             className="onyx-donor-story-save-input"
             data-testid="answer-story-save-summary"
             value={storySummary}
             onChange={event => setStorySummary(event.target.value)}
-            placeholder="Summary"
+            placeholder="摘要"
           />
         </label>
         <label className="onyx-donor-story-save-label" style={{ display: 'grid', gap: 6 }}>
-          <span>Widget Title</span>
+          <span>组件标题</span>
           <input
             className="onyx-donor-story-save-input"
             data-testid="answer-story-save-widget-title"
             value={widgetTitle}
             onChange={event => setWidgetTitle(event.target.value)}
-            placeholder="Widget title"
+            placeholder="组件标题"
           />
         </label>
         <div className="onyx-donor-story-save-actions" style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
@@ -126,7 +126,7 @@ export function StorySaveDialog(props: StorySaveDialogProps) {
             className="chat-assistant-answer-action onyx-donor-answer-surface-action"
             disabled={isSaving || storyTitle.trim() === '' || widgetTitle.trim() === ''}
           >
-            {isSaving ? 'Saving...' : 'Save to Story'}
+            {isSaving ? '正在保存...' : '保存到故事'}
           </button>
           {openStoryHref ? (
             <a
@@ -134,7 +134,7 @@ export function StorySaveDialog(props: StorySaveDialogProps) {
               className="chat-assistant-answer-action onyx-donor-answer-surface-action"
               href={openStoryHref}
             >
-              Open Story
+              打开故事
             </a>
           ) : null}
         </div>

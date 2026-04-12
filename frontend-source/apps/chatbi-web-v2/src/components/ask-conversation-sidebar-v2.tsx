@@ -26,27 +26,27 @@ type PlaceholderConversationSummary = Pick<ConversationSummary, 'conversationId'
 const DONOR_PLACEHOLDER_SESSIONS = [
   {
     conversationId: 'starter-summary',
-    memorySummary: 'Summarize Most Recent 3...',
+    memorySummary: '最近三次对话摘要',
     lastTurnAt: undefined
   },
   {
     conversationId: 'starter-intro',
-    memorySummary: 'Onyx AI Intro',
+    memorySummary: '镜元智算简介',
     lastTurnAt: undefined
   },
   {
     conversationId: 'starter-use-cases',
-    memorySummary: 'Onyx AI Use Cases Overview',
+    memorySummary: '镜元智算使用场景',
     lastTurnAt: undefined
   },
   {
     conversationId: 'starter-poc',
-    memorySummary: 'POC Documents',
+    memorySummary: 'POC 文档',
     lastTurnAt: undefined
   },
   {
     conversationId: 'starter-news',
-    memorySummary: 'Onyx AI Latest News',
+    memorySummary: '镜元智算最新动态',
     lastTurnAt: undefined
   }
 ] satisfies Array<PlaceholderConversationSummary>
@@ -61,13 +61,13 @@ function formatConversationClock(value?: string) {
     return ''
   }
   if (value === 'Starter session') {
-    return value
+    return '示例会话'
   }
   const parsed = new Date(value)
   if (Number.isNaN(parsed.getTime())) {
     return value
   }
-  return parsed.toLocaleTimeString('en-US', {
+  return parsed.toLocaleTimeString('zh-CN', {
     hour: '2-digit',
     minute: '2-digit'
   })
@@ -132,7 +132,7 @@ export function AskConversationSidebarV2({
           setError(null)
           return
         }
-        setError(nextError instanceof Error ? nextError.message : 'Failed to load conversations')
+        setError(nextError instanceof Error ? nextError.message : '加载会话失败')
       })
       .finally(() => {
         if (cancelled) return
@@ -161,7 +161,7 @@ export function AskConversationSidebarV2({
         modelId: activeXpertId,
         turnCount: 0,
         lastTurnAt: undefined,
-        memorySummary: 'Current conversation'
+        memorySummary: '当前会话'
       },
       ...conversations
     ]
@@ -186,7 +186,7 @@ export function AskConversationSidebarV2({
     return (
       <div className="v2-sidebar-list px-3">
         <OnyxTextV2 as="p" color="text-03" font="secondary-body">
-          Loading chats...
+          正在加载会话...
         </OnyxTextV2>
       </div>
     )
@@ -196,7 +196,7 @@ export function AskConversationSidebarV2({
     return (
       <div className="v2-sidebar-list px-3">
         <OnyxTextV2 as="p" color="text-03" font="secondary-body">
-          Conversation load failed
+          会话加载失败
         </OnyxTextV2>
         <OnyxTextV2 as="p" color="text-04" font="secondary-body">
           {error}

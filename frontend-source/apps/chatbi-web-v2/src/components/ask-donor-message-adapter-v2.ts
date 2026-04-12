@@ -33,7 +33,7 @@ function asNonEmptyString(value: unknown) {
 
 function resolveRuntimeActivityLabel(step: RuntimeMessageStep) {
   if (step.kind === 'plan') {
-    return 'Thinking'
+    return '思考中'
   }
 
   const detail = asRecord(step.detail)
@@ -47,7 +47,7 @@ function resolveRuntimeActivityLabel(step: RuntimeMessageStep) {
     haystack.includes('resolve context') ||
     haystack.includes('resolving context')
   ) {
-    return 'Resolving context'
+    return '正在解析上下文'
   }
 
   if (
@@ -55,10 +55,10 @@ function resolveRuntimeActivityLabel(step: RuntimeMessageStep) {
     haystack.includes('execute query') ||
     haystack.includes('executing query')
   ) {
-    return 'Executing query'
+    return '正在执行查询'
   }
 
-  return title ? `Executing ${title}` : 'Executing tool'
+  return title ? `正在执行 ${title}` : '正在执行工具'
 }
 
 function getRuntimeShellHeaderLabel(items: ReadonlyArray<AssistantThreadTimelineItem>) {
@@ -70,11 +70,11 @@ function getRuntimeShellHeaderLabel(items: ReadonlyArray<AssistantThreadTimeline
     const runtimeStatus = [...items]
       .filter((item): item is Extract<AssistantThreadTimelineItem, { kind: 'terminal_status' }> => item.kind === 'terminal_status')
       .sort((left, right) => (right.timelineOrder ?? Number.MIN_SAFE_INTEGER) - (left.timelineOrder ?? Number.MIN_SAFE_INTEGER))[0]
-    return runtimeStatus?.label ?? 'Thinking…'
+    return runtimeStatus?.label ?? '思考中...'
   }
 
   if (latestStep.kind === 'plan_step') {
-    return 'Thinking'
+    return '思考中'
   }
 
   return resolveRuntimeActivityLabel(latestStep.step)

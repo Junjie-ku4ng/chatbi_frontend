@@ -139,10 +139,9 @@ export function AnalyticalCardPreview() {
           <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">
             AnalyticalCard Preview
           </p>
-          <h1 className="text-3xl font-semibold tracking-tight">Onyx x xpert chart direct-port</h1>
+          <h1 className="text-3xl font-semibold tracking-tight">镜元智算 x xpert 图表直连预览</h1>
           <p className="max-w-3xl text-sm text-slate-600">
-            Native prop-surface preview using the transplanted chart runtime, slicer value-help, and Onyx-style card
-            shell.
+            使用迁移后的图表运行时、筛选器值帮助和镜元智算卡片外壳进行原生属性预览。
           </p>
         </header>
 

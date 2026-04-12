@@ -32,7 +32,7 @@ export function OnyxChatPageV2({
             <span className="onyx-chat-page-v2-title-icon">
               <SvgBubbleTextV2 className="h-4 w-4" />
             </span>
-            <span>Chat</span>
+            <span>对话</span>
             <SvgChevronDownV2 className="h-3.5 w-3.5" />
           </span>
         </div>

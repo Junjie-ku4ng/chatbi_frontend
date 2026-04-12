@@ -160,7 +160,7 @@ describe('AskWorkspaceClientV2', () => {
     expect(sourceRailPropsMock).toHaveBeenLastCalledWith(
       expect.objectContaining({
         items: expect.not.arrayContaining([
-          expect.objectContaining({ title: 'Current Conversation' })
+          expect.objectContaining({ title: '当前会话' })
         ])
       })
     )
@@ -181,13 +181,13 @@ describe('AskWorkspaceClientV2', () => {
     expect(sourceRailPropsMock).toHaveBeenLastCalledWith(
       expect.objectContaining({
         items: expect.arrayContaining([
-          expect.objectContaining({ title: 'Current Conversation' })
+          expect.objectContaining({ title: '当前会话' })
         ])
       })
     )
     expect(container.querySelector('[data-testid="workspace-sidebar"]')?.getAttribute('data-active-conversation-id')).toBe(
       'conv-live'
     )
-    expect(container.textContent).toContain('Current Conversation')
+    expect(container.textContent).toContain('当前会话')
   })
 })
