@@ -21,6 +21,8 @@ export type AskWorkspaceClientV2Props = {
   activeXpertId?: string
   modelId?: string
   initialConversationId?: string
+  mockChatScenario?: string
+  mockChatLatencyMs?: number
   handoff: {
     queryLogId?: string
     traceKey?: string
@@ -119,6 +121,8 @@ function buildSourceRailItems(input: {
 export function AskWorkspaceClientV2({
   activeXpertId,
   initialConversationId,
+  mockChatScenario,
+  mockChatLatencyMs,
   handoff,
   shellAnchors
 }: AskWorkspaceClientV2Props) {
@@ -160,6 +164,8 @@ export function AskWorkspaceClientV2({
         <OnyxChatPageV2
           activeXpertId={activeXpertId}
           initialConversationId={conversationId}
+          mockChatScenario={mockChatScenario}
+          mockChatLatencyMs={mockChatLatencyMs}
           handoff={handoff}
           onConversationIdChange={setConversationId}
           shellAnchors={shellAnchors}

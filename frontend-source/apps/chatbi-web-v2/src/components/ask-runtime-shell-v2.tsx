@@ -30,6 +30,8 @@ import { OnyxDonorQuestionCardV2 } from './onyx-donor/onyx-donor-question-card-v
 type AskRuntimeShellV2Props = {
   activeXpertId?: string
   initialConversationId?: string
+  mockChatScenario?: string
+  mockChatLatencyMs?: number
   onConversationIdChange?: (conversationId?: string) => void
   handoff: {
     queryLogId?: string
@@ -73,6 +75,8 @@ function formatProgress(event: ChatStreamEvent | null) {
 export function AskRuntimeShellV2({
   activeXpertId,
   initialConversationId,
+  mockChatScenario,
+  mockChatLatencyMs,
   onConversationIdChange,
   handoff,
   shellAnchors,
@@ -132,6 +136,8 @@ export function AskRuntimeShellV2({
       key={initialConversationId ?? 'new-session'}
       activeXpertId={activeXpertId}
       initialConversationId={initialConversationId}
+      mockChatScenario={mockChatScenario}
+      mockChatLatencyMs={mockChatLatencyMs}
       onConversationIdChange={onConversationIdChange}
       initialMessages={initialMessages}
       historyLoadError={historyLoadError}
@@ -212,6 +218,8 @@ function DiagnosticsRailCardV2({
 function AskRuntimeShellSessionV2({
   activeXpertId,
   initialConversationId,
+  mockChatScenario,
+  mockChatLatencyMs,
   onConversationIdChange,
   initialMessages,
   historyLoadError,
@@ -234,6 +242,8 @@ function AskRuntimeShellSessionV2({
   const runtime = useChatbiStreamRuntime({
     xpertId: activeXpertId,
     conversationId,
+    mockChatScenario,
+    mockChatLatencyMs,
     initialMessages,
     onConversationId: nextId => {
       setConversationId(current => (current === nextId ? current : nextId))

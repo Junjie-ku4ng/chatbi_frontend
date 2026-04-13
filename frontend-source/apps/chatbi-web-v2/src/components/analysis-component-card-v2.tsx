@@ -1,8 +1,9 @@
 'use client'
 
-import { useEffect, useState, type Dispatch, type SetStateAction } from 'react'
+import { useEffect, useMemo, useState, type Dispatch, type SetStateAction } from 'react'
 import {
   AnswerSurfaceShell,
+  AnswerSurfaceViewSwitch,
   buildAnswerSurfaceOpenAnalysisHref,
   ChartAnswerComponent,
   KpiAnswerComponent,
@@ -19,7 +20,12 @@ type ISlicer = {
   members?: unknown[]
 } & Record<string, unknown>
 
-function formatSurfaceKind(type: AnswerSurfaceView) {
+function formatSurfaceKind(type: AnswerSurfaceView, payload: AnswerComponentPayload) {
+  const views = Array.isArray(payload.interaction?.availableViews) ? payload.interaction.availableViews : []
+  if (views.includes('chart') && views.includes('table')) {
+    return '图表 / 表格分析'
+  }
+
   if (type === 'kpi') {
     return 'KPI 分析'
   }
@@ -30,6 +36,34 @@ function formatSurfaceKind(type: AnswerSurfaceView) {
     return '表格分析'
   }
   return `${type} 分析`
+}
+
+function isAnswerSurfaceView(value: unknown): value is AnswerSurfaceView {
+  return value === 'table' || value === 'chart' || value === 'kpi'
+}
+
+function resolveAvailableViews(type: AnswerSurfaceView, payload: AnswerComponentPayload) {
+  const interactionViews = Array.isArray(payload.interaction?.availableViews)
+    ? payload.interaction.availableViews.filter(isAnswerSurfaceView)
+    : []
+  const views = interactionViews.length > 0 ? interactionViews : [type]
+
+  if (!views.includes(type)) {
+    views.unshift(type)
+  }
+
+  return Array.from(new Set(views))
+}
+
+function resolveDefaultView(type: AnswerSurfaceView, payload: AnswerComponentPayload, availableViews: AnswerSurfaceView[]) {
+  const configuredDefault = payload.interaction?.defaultView
+  if (isAnswerSurfaceView(configuredDefault) && availableViews.includes(configuredDefault)) {
+    return configuredDefault
+  }
+  if (availableViews.includes(type)) {
+    return type
+  }
+  return availableViews[0] ?? type
 }
 
 function asStringList(value: unknown) {
@@ -201,6 +235,9 @@ export function AnalysisComponentCardV2({
   const [canvasStatus, setCanvasStatus] = useState<string | null>(null)
   const [appliedDraftPatch, setAppliedDraftPatch] = useState<Record<string, unknown>>({})
   const [explorerDraftPatch, setExplorerDraftPatch] = useState<Record<string, unknown>>({})
+  const availableViews = useMemo(() => resolveAvailableViews(type, payload), [payload, type])
+  const defaultView = useMemo(() => resolveDefaultView(type, payload, availableViews), [availableViews, payload, type])
+  const [viewMode, setViewMode] = useState<AnswerSurfaceView>(defaultView)
   const title =
     (typeof payload.label === 'string' && payload.label.trim()) ||
     (typeof payload.interaction?.story?.title === 'string' && payload.interaction.story.title.trim()) ||
@@ -211,7 +248,14 @@ export function AnalysisComponentCardV2({
   useEffect(() => {
     setAppliedDraftPatch({})
     setExplorerDraftPatch({})
-  }, [payload.queryLogId, payload.traceKey, type])
+    setViewMode(defaultView)
+  }, [defaultView, payload.queryLogId, payload.traceKey, type])
+
+  useEffect(() => {
+    if (!availableViews.includes(viewMode)) {
+      setViewMode(defaultView)
+    }
+  }, [availableViews, defaultView, viewMode])
 
   function handleLinkedSlicersChange(
     applyPatch: Dispatch<SetStateAction<Record<string, unknown>>>,
@@ -221,7 +265,7 @@ export function AnalysisComponentCardV2({
   }
 
   async function handleOpenCanvas() {
-    if (type === 'kpi' || isOpeningCanvas) {
+    if (viewMode === 'kpi' || isOpeningCanvas) {
       return
     }
 
@@ -235,7 +279,7 @@ export function AnalysisComponentCardV2({
         '分析结果'
 
       const result = await saveAnswerSurfaceToStory({
-        type,
+        type: viewMode,
         payload,
         storyTitle: `${title} 画布`,
         widgetTitle: title
@@ -252,69 +296,82 @@ export function AnalysisComponentCardV2({
 
   return (
     <>
-      <OnyxDonorCardV2
-        className="v2-analysis-card-shell onyx-donor-analysis-card-shell onyx-native-donor-analysis-card-shell"
-        data-testid="analysis-component-card-v2-shell"
-        padding="md"
-        variant="secondary"
-      >
-        <section className="onyx-donor-analysis-card-shell" data-testid="analysis-component-card-v2-header">
-          <div className="v2-analysis-card-head">
-            <div className="v2-analysis-card-copy">
-              <div className="v2-analysis-card-eyebrow" data-testid="analysis-component-card-v2-surface-kind">
-                {formatSurfaceKind(type)}
+      <div className="v2-analysis-result-shell" data-testid="analysis-component-card-v2-outer">
+        <AnswerSurfaceViewSwitch
+          availableViews={availableViews}
+          className="v2-analysis-card-bookmark-tabs"
+          viewMode={viewMode}
+          onSelectView={setViewMode}
+          testId="analysis-card-view-switch"
+        />
+        <OnyxDonorCardV2
+          className="v2-analysis-card-shell onyx-donor-analysis-card-shell onyx-native-donor-analysis-card-shell"
+          data-testid="analysis-component-card-v2-shell"
+          padding="md"
+          variant="secondary"
+        >
+          <section className="onyx-donor-analysis-card-shell" data-testid="analysis-component-card-v2-header">
+            <div className="v2-analysis-card-head">
+              <div className="v2-analysis-card-copy">
+                <div className="v2-analysis-card-eyebrow" data-testid="analysis-component-card-v2-surface-kind">
+                  {formatSurfaceKind(type, payload)}
+                </div>
+                <h3 className="v2-analysis-card-title" data-testid="analysis-component-card-v2-title">
+                  {title}
+                </h3>
               </div>
-              <h3 className="v2-analysis-card-title" data-testid="analysis-component-card-v2-title">
-                {title}
-              </h3>
+              {contextTokens.length > 0 ? (
+                <div className="v2-analysis-card-context" data-testid="analysis-component-card-v2-context">
+                  {contextTokens.map(token => (
+                    <span className="v2-pill" key={token}>
+                      {token}
+                    </span>
+                  ))}
+                </div>
+              ) : null}
             </div>
-            {contextTokens.length > 0 ? (
-              <div className="v2-analysis-card-context" data-testid="analysis-component-card-v2-context">
-                {contextTokens.map(token => (
-                  <span className="v2-pill" key={token}>
+            {appliedDraftSummary.length > 0 ? (
+              <div className="v2-analysis-card-summary" data-testid="analysis-component-card-v2-draft-summary">
+                {appliedDraftSummary.map(token => (
+                  <span className="v2-badge" key={token}>
                     {token}
                   </span>
                 ))}
               </div>
             ) : null}
-          </div>
-          {appliedDraftSummary.length > 0 ? (
-            <div className="v2-analysis-card-summary" data-testid="analysis-component-card-v2-draft-summary">
-              {appliedDraftSummary.map(token => (
-                <span className="v2-badge" key={token}>
-                  {token}
-                </span>
-              ))}
-            </div>
-          ) : null}
-          <AnswerSurfaceShell
-            type={type}
-            payload={payload}
-            draftPatch={appliedDraftPatch}
-            onDraftPatchChange={setAppliedDraftPatch}
-            onApplyPrompt={onApplyPrompt}
-            onOpenExplorer={
-              type === 'kpi'
-                ? undefined
-                : () => {
-                    setExplorerDraftPatch({ ...appliedDraftPatch })
-                    setIsExplorerOpen(true)
+            <AnswerSurfaceShell
+              type={type}
+              payload={payload}
+              draftPatch={appliedDraftPatch}
+              onDraftPatchChange={setAppliedDraftPatch}
+              onApplyPrompt={onApplyPrompt}
+              viewMode={viewMode}
+              onSelectView={setViewMode}
+              showViewSwitch={false}
+              surfaceFrame="embedded"
+              onOpenExplorer={
+                viewMode === 'kpi'
+                  ? undefined
+                  : () => {
+                      setExplorerDraftPatch({ ...appliedDraftPatch })
+                      setIsExplorerOpen(true)
+                    }
+              }
+              onOpenCanvas={viewMode === 'kpi' ? undefined : handleOpenCanvas}
+              onAddToStory={() => {
+                setIsStoryDialogOpen(true)
+              }}
+              renderBody={viewMode =>
+                renderAnalysisBody(viewMode, payload, {
+                  onLinkedSlicersChange: slicers => {
+                    handleLinkedSlicersChange(setAppliedDraftPatch, slicers)
                   }
-            }
-            onOpenCanvas={type === 'kpi' ? undefined : handleOpenCanvas}
-            onAddToStory={() => {
-              setIsStoryDialogOpen(true)
-            }}
-            renderBody={viewMode =>
-              renderAnalysisBody(viewMode, payload, {
-                onLinkedSlicersChange: slicers => {
-                  handleLinkedSlicersChange(setAppliedDraftPatch, slicers)
-                }
-              })
-            }
-          />
-        </section>
-      </OnyxDonorCardV2>
+                })
+              }
+            />
+          </section>
+        </OnyxDonorCardV2>
+      </div>
       {canvasStatus ? <p className="v2-analysis-status">{canvasStatus}</p> : null}
       {isExplorerOpen ? (
         <div
@@ -324,7 +381,15 @@ export function AnalysisComponentCardV2({
           aria-modal="true"
         >
           <div className="chat-assistant-answer-surface-dialog-bar onyx-donor-answer-surface-dialog-bar">
-            <strong className="v2-analysis-explorer-title">探索器</strong>
+            <div className="v2-analysis-explorer-bar-start">
+              <strong className="v2-analysis-explorer-title">探索器</strong>
+              <AnswerSurfaceViewSwitch
+                availableViews={availableViews}
+                viewMode={viewMode}
+                onSelectView={setViewMode}
+                testId="analysis-explorer-view-switch"
+              />
+            </div>
             <button
               type="button"
               className="chat-assistant-answer-action onyx-donor-answer-surface-action"
@@ -335,13 +400,17 @@ export function AnalysisComponentCardV2({
               关闭探索器
             </button>
           </div>
-          <div data-testid="analysis-explorer-shell-v2">
+          <div className="v2-analysis-explorer-shell" data-testid="analysis-explorer-shell-v2">
             <AnswerSurfaceShell
               type={type}
               payload={payload}
               draftPatch={explorerDraftPatch}
               onDraftPatchChange={setExplorerDraftPatch}
               onApplyPrompt={onApplyPrompt}
+              viewMode={viewMode}
+              onSelectView={setViewMode}
+              showViewSwitch={false}
+              surfaceFrame="embedded"
               onOpenAnalysis={() => {
                 const href = buildAnswerSurfaceOpenAnalysisHref(payload, {
                   prompt: '继续探索当前结果，并优先调整维度、筛选和展示形态。',
@@ -352,7 +421,7 @@ export function AnalysisComponentCardV2({
                   window.open(href, '_blank', 'noopener,noreferrer')
                 }
               }}
-              onOpenCanvas={type === 'kpi' ? undefined : handleOpenCanvas}
+              onOpenCanvas={viewMode === 'kpi' ? undefined : handleOpenCanvas}
               onAddToStory={() => {
                 setIsStoryDialogOpen(true)
               }}
@@ -390,7 +459,7 @@ export function AnalysisComponentCardV2({
       ) : null}
       <StorySaveDialog
         isOpen={isStoryDialogOpen}
-        type={type}
+        type={viewMode}
         payload={payload}
         onClose={() => {
           setIsStoryDialogOpen(false)

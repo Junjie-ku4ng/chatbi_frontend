@@ -873,6 +873,8 @@ type RuntimeOptions = {
   modelId?: string
   xpertId?: string
   conversationId?: string
+  mockChatScenario?: string
+  mockChatLatencyMs?: number
   initialMessages?: readonly ThreadMessageLike[]
   analysisFollowup?: {
     prompt: string
@@ -1164,7 +1166,11 @@ export function createChatbiStreamAdapter(options: RuntimeOptions): ChatModelAda
                 accept: 'text/event-stream',
                 'content-type': 'application/json',
                 ...buildAuthHeaders(),
-                ...buildRequestContextHeaders()
+                ...buildRequestContextHeaders(),
+                ...(options.mockChatScenario ? { 'x-chatbi-mock-scenario': options.mockChatScenario } : {}),
+                ...(options.mockChatLatencyMs !== undefined
+                  ? { 'x-chatbi-mock-latency-ms': String(options.mockChatLatencyMs) }
+                  : {})
               },
               body: requestBody,
               signal: abortSignal,
@@ -1497,6 +1503,8 @@ export function useChatbiStreamRuntime(options: RuntimeOptions) {
     options.analysisFollowup,
     options.conversationId,
     options.modelId,
+    options.mockChatLatencyMs,
+    options.mockChatScenario,
     options.onAnalysisFollowupConsumed,
     options.onConversationId,
     options.onEvent,

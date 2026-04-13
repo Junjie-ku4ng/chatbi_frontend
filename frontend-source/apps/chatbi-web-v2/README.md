@@ -22,3 +22,10 @@ yarn --cwd apps/chatbi-web-v2 dev
 yarn --cwd apps/chatbi-web-v2 test
 yarn --cwd apps/chatbi-web-v2 build
 ```
+
+SSE mock test:
+
+```text
+http://localhost:3400/sse-chat-test
+http://localhost:3400/sse-chat-test?mockChatScenario=clarification&mockChatLatencyMs=500
+```

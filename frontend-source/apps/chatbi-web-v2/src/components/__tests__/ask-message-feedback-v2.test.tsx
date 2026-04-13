@@ -107,7 +107,7 @@ describe('AskMessageFeedbackV2', () => {
 
     expect(toolbar).not.toBeNull()
     expect(toolbar?.className).toContain('onyx-donor-toolbar')
-    expect(toolbar?.className).toContain('flex md:flex-row justify-between items-center w-full transition-transform duration-300 ease-in-out transform opacity-100 pl-1')
+    expect(toolbar?.className).toContain('flex md:flex-row justify-start items-center w-full transition-transform duration-300 ease-in-out transform opacity-100 pl-1')
     expect(actionGroup).not.toBeNull()
     expect(actionGroup?.className).toContain('onyx-donor-toolbar-actions')
     expect(actionGroup?.className).toContain('flex items-center gap-1')
@@ -133,8 +133,11 @@ describe('AskMessageFeedbackV2', () => {
         }
       ]
     })
+    const actionGroup = container.querySelector('[data-testid="onyx-donor-toolbar-actions"]')
 
     expect(container.querySelector('[data-testid="onyx-donor-toolbar-sources"]')).not.toBeNull()
+    expect(actionGroup?.querySelector('[data-testid="onyx-donor-toolbar-sources"]')).not.toBeNull()
+    expect(container.querySelector('[aria-label="回答来源"] svg')).not.toBeNull()
     expect(Array.from(container.querySelectorAll('button')).some(button => button.textContent?.trim() === '回答来源')).toBe(true)
   })
 

@@ -1,8 +1,10 @@
 import {
   partitionAssistantThreadTimeline,
-  type AssistantThreadTimelineItem
+  type AssistantThreadTimelineItem,
+  type ThreadAnalysisComponent
 } from '@/modules/chat/runtime/chat-thread-timeline'
 import type { RuntimeMessageStep } from '@/modules/chat/runtime/chat-runtime-projection'
+import type { AnswerComponentPayload, AnswerSurfaceView } from '@/modules/chat/components/answer-components/types'
 
 export type DonorAnswerSectionKindV2 = 'markdown' | 'timeline' | 'clarification' | 'analysis' | 'status'
 
@@ -29,6 +31,95 @@ function asRecord(value: unknown) {
 
 function asNonEmptyString(value: unknown) {
   return typeof value === 'string' && value.trim() !== '' ? value.trim() : undefined
+}
+
+function asPayloadRecord(value: unknown) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    return {} as AnswerComponentPayload
+  }
+  return value as AnswerComponentPayload
+}
+
+function getAnalysisComponentKey(component: ThreadAnalysisComponent) {
+  const payload = asPayloadRecord(component.payload)
+  const interaction = asRecord(payload.interaction)
+  const explain = asRecord(interaction?.explain)
+  const handoff = asRecord(payload.analysisHandoff)
+
+  return (
+    asNonEmptyString(payload.queryLogId) ??
+    asNonEmptyString(explain?.queryLogId) ??
+    asNonEmptyString(handoff?.queryLogId) ??
+    asNonEmptyString(payload.traceKey) ??
+    asNonEmptyString(explain?.traceKey) ??
+    asNonEmptyString(handoff?.traceKey)
+  )
+}
+
+function isChartTablePair(left: ThreadAnalysisComponent, right: ThreadAnalysisComponent) {
+  const types = new Set([left.type, right.type])
+  return left.type !== right.type && types.has('chart') && types.has('table')
+}
+
+function mergeAvailableViews(left: ThreadAnalysisComponent, right: ThreadAnalysisComponent) {
+  const leftPayload = asPayloadRecord(left.payload)
+  const rightPayload = asPayloadRecord(right.payload)
+  const views = [
+    left.type,
+    right.type,
+    ...(Array.isArray(leftPayload.interaction?.availableViews) ? leftPayload.interaction.availableViews : []),
+    ...(Array.isArray(rightPayload.interaction?.availableViews) ? rightPayload.interaction.availableViews : [])
+  ].filter((view): view is AnswerSurfaceView => view === 'chart' || view === 'table' || view === 'kpi')
+
+  return Array.from(new Set(views))
+}
+
+function mergeAnalysisComponentItems(
+  left: Extract<AssistantThreadTimelineItem, { kind: 'analysis_component' }>,
+  right: Extract<AssistantThreadTimelineItem, { kind: 'analysis_component' }>
+): Extract<AssistantThreadTimelineItem, { kind: 'analysis_component' }> | null {
+  if (!isChartTablePair(left.component, right.component)) {
+    return null
+  }
+
+  const leftKey = getAnalysisComponentKey(left.component)
+  const rightKey = getAnalysisComponentKey(right.component)
+  if (!leftKey && !rightKey) {
+    return null
+  }
+  if (leftKey && rightKey && leftKey !== rightKey) {
+    return null
+  }
+
+  const leftPayload = asPayloadRecord(left.component.payload)
+  const rightPayload = asPayloadRecord(right.component.payload)
+  const views = mergeAvailableViews(left.component, right.component)
+  const mergedPayload: AnswerComponentPayload = {
+    ...rightPayload,
+    ...leftPayload,
+    ...(leftPayload.option ?? rightPayload.option ? { option: leftPayload.option ?? rightPayload.option } : {}),
+    ...(leftPayload.rows ?? rightPayload.rows ? { rows: leftPayload.rows ?? rightPayload.rows } : {}),
+    ...(leftPayload.columns ?? rightPayload.columns ? { columns: leftPayload.columns ?? rightPayload.columns } : {}),
+    interaction: {
+      ...(rightPayload.interaction ?? {}),
+      ...(leftPayload.interaction ?? {}),
+      availableViews: views,
+      defaultView: left.component.type
+    }
+  }
+
+  return {
+    key: `${left.key}+${right.key}`,
+    kind: 'analysis_component',
+    component: {
+      type: left.component.type,
+      payload: mergedPayload
+    },
+    timelineOrder:
+      left.timelineOrder !== undefined && right.timelineOrder !== undefined
+        ? Math.min(left.timelineOrder, right.timelineOrder)
+        : left.timelineOrder ?? right.timelineOrder
+  }
 }
 
 function resolveRuntimeActivityLabel(step: RuntimeMessageStep) {
@@ -112,6 +203,21 @@ function coalesceFinalAnswerSections(
   for (const item of items) {
     const sectionKind = getAnswerSectionKind(item)
     const previousSection = sections.at(-1)
+
+    if (
+      item.kind === 'analysis_component' &&
+      previousSection?.item.kind === 'analysis_component'
+    ) {
+      const merged = mergeAnalysisComponentItems(previousSection.item, item)
+      if (merged) {
+        sections[sections.length - 1] = {
+          key: `${previousSection.key}+section:${item.key}`,
+          sectionKind: 'analysis',
+          item: merged
+        }
+        continue
+      }
+    }
 
     if (
       sectionKind === 'markdown' &&

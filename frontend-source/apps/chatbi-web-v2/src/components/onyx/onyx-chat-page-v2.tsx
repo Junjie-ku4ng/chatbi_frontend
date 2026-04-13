@@ -4,6 +4,8 @@ import { SvgBubbleTextV2, SvgChevronDownV2 } from '@/components/onyx/icons'
 type OnyxChatPageV2Props = {
   activeXpertId?: string
   initialConversationId?: string
+  mockChatScenario?: string
+  mockChatLatencyMs?: number
   handoff: {
     queryLogId?: string
     traceKey?: string
@@ -20,6 +22,8 @@ type OnyxChatPageV2Props = {
 export function OnyxChatPageV2({
   activeXpertId,
   initialConversationId,
+  mockChatScenario,
+  mockChatLatencyMs,
   handoff,
   shellAnchors,
   onConversationIdChange
@@ -42,6 +46,8 @@ export function OnyxChatPageV2({
         <AskRuntimeShellV2
           activeXpertId={activeXpertId}
           initialConversationId={initialConversationId}
+          mockChatScenario={mockChatScenario}
+          mockChatLatencyMs={mockChatLatencyMs}
           handoff={handoff}
           onConversationIdChange={onConversationIdChange}
           shellAnchors={shellAnchors}

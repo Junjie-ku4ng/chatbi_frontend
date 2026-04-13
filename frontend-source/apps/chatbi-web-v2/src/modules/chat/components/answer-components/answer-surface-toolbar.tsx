@@ -70,6 +70,47 @@ function renderAction(
   )
 }
 
+export function AnswerSurfaceViewSwitch(props: {
+  availableViews: AnswerSurfaceView[]
+  viewMode: AnswerSurfaceView
+  onSelectView: (view: AnswerSurfaceView) => void
+  testId?: string
+  className?: string
+}) {
+  if (props.availableViews.length <= 1) {
+    return null
+  }
+
+  return (
+    <div
+      className={['onyx-donor-answer-surface-view-switch onyx-donor-answer-surface-bookmark-tabs', props.className]
+        .filter(Boolean)
+        .join(' ')}
+      data-testid={props.testId ?? 'answer-surface-view-switch'}
+      role="tablist"
+      aria-label="分析结果视图"
+    >
+      {props.availableViews.map(view => {
+        const isActive = props.viewMode === view
+        return (
+          <button
+            aria-selected={isActive}
+            className="onyx-donor-answer-surface-bookmark-tab"
+            data-state={isActive ? 'active' : 'inactive'}
+            data-testid={`answer-surface-view-${view}`}
+            key={view}
+            onClick={() => props.onSelectView(view)}
+            role="tab"
+            type="button"
+          >
+            {formatViewLabel(view)}
+          </button>
+        )
+      })}
+    </div>
+  )
+}
+
 export function AnswerSurfaceToolbar(props: {
   interaction?: AnswerSurfaceInteraction
   availableViews: AnswerSurfaceView[]
@@ -85,14 +126,16 @@ export function AnswerSurfaceToolbar(props: {
   onOpenCanvas?: () => void
   onAddToStory?: () => void
   onFullscreen?: () => void
+  showViewSwitch?: boolean
 }) {
   const actions = [
-    ...props.availableViews.map(view =>
-      renderAction(`answer-surface-view-${view}`, formatViewLabel(view), {
-        active: props.viewMode === view,
-        onClick: () => props.onSelectView(view),
-        variant: 'view'
-      })
+    props.showViewSwitch === false ? null : (
+      <AnswerSurfaceViewSwitch
+        key="view-switch"
+        availableViews={props.availableViews}
+        viewMode={props.viewMode}
+        onSelectView={props.onSelectView}
+      />
     ),
     props.interaction?.sort?.enabled
       ? renderAction('answer-surface-sort', '排序', {
@@ -160,7 +203,7 @@ export function AnswerSurfaceToolbar(props: {
           variant: 'utility'
         })
       : null
-  ].filter(Boolean)
+  ].flat().filter(Boolean)
 
   if (actions.length === 0) {
     return null
@@ -170,7 +213,7 @@ export function AnswerSurfaceToolbar(props: {
     <div className="chat-assistant-answer-actions onyx-donor-answer-surface-toolbar" data-testid="answer-surface-toolbar">
       <div className="onyx-donor-answer-surface-toolbar-shell" data-testid="answer-surface-toolbar-shell">
         <div className="onyx-donor-answer-surface-toolbar-row" data-testid="answer-surface-toolbar-row">
-        {actions}
+          {actions}
         </div>
       </div>
     </div>

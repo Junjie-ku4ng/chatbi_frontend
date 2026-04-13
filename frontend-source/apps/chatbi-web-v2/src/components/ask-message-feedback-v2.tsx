@@ -6,7 +6,7 @@ import { createMessageFeedback, deleteMessageFeedback, getMessageFeedback } from
 import type { ChatSourceItem } from '@/modules/chat/runtime/chat-source-items'
 import { useChatSourceRailStore } from '@/modules/chat/runtime/chat-source-rail-store'
 import { copyDonorAnswerV2 } from './ask-donor-copy-utils-v2'
-import { SvgCopyV2, SvgRotateV2, SvgThumbDownV2, SvgThumbUpV2 } from './onyx/icons'
+import { SvgCopyV2, SvgDocumentV2, SvgRotateV2, SvgThumbDownV2, SvgThumbUpV2 } from './onyx/icons'
 import { OnyxSelectButtonV2 } from './onyx/onyx-select-button-v2'
 
 type AskMessageFeedbackV2Props = {
@@ -38,11 +38,17 @@ export function AskMessageFeedbackV2({
       return
     }
 
-    void getMessageFeedback(conversationId, messageId).then(result => {
-      if (!cancelled) {
-        setFeedback(result)
-      }
-    })
+    void getMessageFeedback(conversationId, messageId)
+      .then(result => {
+        if (!cancelled) {
+          setFeedback(result)
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setFeedback(null)
+        }
+      })
 
     return () => {
       cancelled = true
@@ -85,7 +91,7 @@ export function AskMessageFeedbackV2({
 
   return (
     <div
-      className="onyx-donor-toolbar flex md:flex-row justify-between items-center w-full transition-transform duration-300 ease-in-out transform opacity-100 pl-1"
+      className="onyx-donor-toolbar flex md:flex-row justify-start items-center w-full transition-transform duration-300 ease-in-out transform opacity-100 pl-1"
       data-testid="AgentMessage/toolbar"
     >
       <div className="onyx-donor-toolbar-actions flex items-center gap-1" data-testid="onyx-donor-toolbar-actions">
@@ -139,25 +145,26 @@ export function AskMessageFeedbackV2({
             variant="select-light"
           />
         </div>
+        {sources.length > 0 ? (
+          <div data-testid="onyx-donor-toolbar-sources">
+            <OnyxSelectButtonV2
+              aria-label="回答来源"
+              icon={SvgDocumentV2}
+              onClick={() => {
+                toggleMessageSources({
+                  messageId,
+                  sources
+                })
+              }}
+              size="sm"
+              state={isSourceSelected ? 'selected' : 'empty'}
+              variant="select-heavy"
+            >
+              回答来源
+            </OnyxSelectButtonV2>
+          </div>
+        ) : null}
       </div>
-      {sources.length > 0 ? (
-        <div data-testid="onyx-donor-toolbar-sources">
-          <OnyxSelectButtonV2
-            aria-label="回答来源"
-            onClick={() => {
-              toggleMessageSources({
-                messageId,
-                sources
-              })
-            }}
-            size="sm"
-            state={isSourceSelected ? 'selected' : 'empty'}
-            variant="select-light"
-          >
-            回答来源
-          </OnyxSelectButtonV2>
-        </div>
-      ) : null}
     </div>
   )
 }

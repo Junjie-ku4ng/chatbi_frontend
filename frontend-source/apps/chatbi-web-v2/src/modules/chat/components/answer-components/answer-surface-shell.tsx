@@ -124,6 +124,10 @@ export function AnswerSurfaceShell(props: {
   onOpenCanvas?: () => void
   onAddToStory?: () => void
   onApplyPrompt?: (prompt: string) => void
+  viewMode?: AnswerSurfaceView
+  onSelectView?: (view: AnswerSurfaceView) => void
+  showViewSwitch?: boolean
+  surfaceFrame?: 'card' | 'embedded'
 }) {
   const state = useAnswerSurfaceState({
     type: props.type,
@@ -131,6 +135,10 @@ export function AnswerSurfaceShell(props: {
     draftPatch: props.draftPatch,
     onDraftPatchChange: props.onDraftPatchChange
   })
+  const viewMode = state.availableViews.includes(props.viewMode ?? state.viewMode)
+    ? props.viewMode ?? state.viewMode
+    : state.viewMode
+  const handleSelectView = props.onSelectView ?? state.setViewMode
   const openAnalysisHref = buildAnswerSurfaceOpenAnalysisHref(props.payload, {
     patch: state.draftPatch
   })
@@ -145,71 +153,84 @@ export function AnswerSurfaceShell(props: {
         }
       : undefined
 
-  const surface = (
-    <OnyxDonorCardV2
-      className="chat-assistant-answer-surface nx-shell-panel onyx-donor-answer-surface onyx-native-donor-answer-surface-card"
-      data-testid="answer-surface-shell-card"
-      padding="md"
-      variant="secondary"
-    >
-      <div className="onyx-native-donor-answer-surface-stack" data-testid="answer-surface-shell-stack">
-        <AnswerSurfaceToolbar
-          interaction={props.payload.interaction}
-          availableViews={state.availableViews}
-          viewMode={state.viewMode}
-          activePanel={state.activePanel}
-          onSelectView={state.setViewMode}
-          onTogglePanel={state.togglePanel}
-          openExplorerHref={props.openExplorerHref}
-          onOpenExplorer={props.onOpenExplorer}
-          openAnalysisHref={openAnalysisHref}
-          onOpenAnalysis={props.onOpenAnalysis}
-          onExplore={handleExplore}
-          onOpenCanvas={props.onOpenCanvas}
-          onAddToStory={props.onAddToStory}
-          onFullscreen={state.openFullscreen}
-        />
-        {queryLogId || traceKey ? (
-          <div
-            className="chat-assistant-answer-surface-meta nx-shell-meta-row onyx-donor-answer-surface-meta"
-            data-testid="answer-surface-meta"
-          >
-            <div className="onyx-donor-answer-surface-meta-shell" data-testid="answer-surface-meta-shell">
-              {queryLogId ? (
-                <span data-testid="answer-surface-query-log-id" className="onyx-donor-answer-surface-meta-chip">
-                  <span data-testid="answer-surface-query-log-id-label" className="onyx-donor-answer-surface-meta-label">
-                    查询日志：
-                  </span>{' '}
-                  <span data-testid="answer-surface-query-log-id-value" className="onyx-donor-answer-surface-meta-value">
-                    {queryLogId}
-                  </span>
+  const surfaceContent = (
+    <div className="onyx-native-donor-answer-surface-stack" data-testid="answer-surface-shell-stack">
+      <AnswerSurfaceToolbar
+        interaction={props.payload.interaction}
+        availableViews={state.availableViews}
+        viewMode={viewMode}
+        activePanel={state.activePanel}
+        onSelectView={handleSelectView}
+        onTogglePanel={state.togglePanel}
+        openExplorerHref={props.openExplorerHref}
+        onOpenExplorer={props.onOpenExplorer}
+        openAnalysisHref={openAnalysisHref}
+        onOpenAnalysis={props.onOpenAnalysis}
+        onExplore={handleExplore}
+        onOpenCanvas={props.onOpenCanvas}
+        onAddToStory={props.onAddToStory}
+        onFullscreen={state.openFullscreen}
+        showViewSwitch={props.showViewSwitch}
+      />
+      {queryLogId || traceKey ? (
+        <div
+          className="chat-assistant-answer-surface-meta nx-shell-meta-row onyx-donor-answer-surface-meta"
+          data-testid="answer-surface-meta"
+        >
+          <div className="onyx-donor-answer-surface-meta-shell" data-testid="answer-surface-meta-shell">
+            {queryLogId ? (
+              <span data-testid="answer-surface-query-log-id" className="onyx-donor-answer-surface-meta-chip">
+                <span data-testid="answer-surface-query-log-id-label" className="onyx-donor-answer-surface-meta-label">
+                  查询日志：
+                </span>{' '}
+                <span data-testid="answer-surface-query-log-id-value" className="onyx-donor-answer-surface-meta-value">
+                  {queryLogId}
                 </span>
-              ) : null}
-              {traceKey ? (
-                <span data-testid="answer-surface-trace-key" className="onyx-donor-answer-surface-meta-chip">
-                  <span data-testid="answer-surface-trace-key-label" className="onyx-donor-answer-surface-meta-label">
-                    追踪：
-                  </span>{' '}
-                  <span data-testid="answer-surface-trace-key-value" className="onyx-donor-answer-surface-meta-value">
-                    {traceKey}
-                  </span>
+              </span>
+            ) : null}
+            {traceKey ? (
+              <span data-testid="answer-surface-trace-key" className="onyx-donor-answer-surface-meta-chip">
+                <span data-testid="answer-surface-trace-key-label" className="onyx-donor-answer-surface-meta-label">
+                  追踪：
+                </span>{' '}
+                <span data-testid="answer-surface-trace-key-value" className="onyx-donor-answer-surface-meta-value">
+                  {traceKey}
                 </span>
-              ) : null}
-            </div>
-          </div>
-        ) : null}
-        {renderActivePanel(props.payload, state.draftPatch, state.activePanel, state.updateDraftPatch)}
-        <div className="onyx-donor-answer-surface-body-shell" data-testid="answer-surface-body-shell">
-          <div
-            className={`onyx-donor-answer-surface-body onyx-donor-answer-surface-body-${state.viewMode}`}
-            data-testid={`answer-surface-body-${state.viewMode}`}
-          >
-            {props.renderBody(state.viewMode)}
+              </span>
+            ) : null}
           </div>
         </div>
+      ) : null}
+      {renderActivePanel(props.payload, state.draftPatch, state.activePanel, state.updateDraftPatch)}
+      <div className="onyx-donor-answer-surface-body-shell" data-testid="answer-surface-body-shell">
+        <div
+          className={`onyx-donor-answer-surface-body onyx-donor-answer-surface-body-${viewMode}`}
+          data-testid={`answer-surface-body-${viewMode}`}
+        >
+          {props.renderBody(viewMode)}
+        </div>
       </div>
-    </OnyxDonorCardV2>
+    </div>
   )
+
+  const surface =
+    props.surfaceFrame === 'embedded' ? (
+      <div
+        className="chat-assistant-answer-surface nx-shell-panel onyx-donor-answer-surface onyx-donor-answer-surface-embedded"
+        data-testid="answer-surface-shell-card"
+      >
+        {surfaceContent}
+      </div>
+    ) : (
+      <OnyxDonorCardV2
+        className="chat-assistant-answer-surface nx-shell-panel onyx-donor-answer-surface onyx-native-donor-answer-surface-card"
+        data-testid="answer-surface-shell-card"
+        padding="md"
+        variant="secondary"
+      >
+        {surfaceContent}
+      </OnyxDonorCardV2>
+    )
 
   if (!state.isFullscreen) {
     return surface

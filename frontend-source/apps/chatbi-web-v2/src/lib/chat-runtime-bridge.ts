@@ -7,6 +7,7 @@ export { KpiAnswerComponent } from '@/modules/chat/components/answer-components/
 export { TableAnswerComponent } from '@/modules/chat/components/answer-components/table-component'
 export { splitAssistantTextWithEcharts } from '@/modules/chat/components/answer-components/echarts-markdown'
 export { AnswerSurfaceShell } from '@/modules/chat/components/answer-components/answer-surface-shell'
+export { AnswerSurfaceViewSwitch } from '@/modules/chat/components/answer-components/answer-surface-toolbar'
 export { StorySaveDialog } from '@/modules/chat/components/answer-components/story-save-dialog'
 export {
   buildAnswerSurfaceOpenAnalysisHref,

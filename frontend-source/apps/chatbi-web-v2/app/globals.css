@@ -1395,6 +1395,50 @@ textarea {
   gap: 6px;
 }
 
+.onyx-app-frame-v2 .onyx-donor-answer-surface-view-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.onyx-app-frame-v2 .onyx-donor-answer-surface-bookmark-tab {
+  min-height: 34px;
+  min-width: 76px;
+  padding: 8px 16px;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-bottom-color: rgba(15, 23, 42, 0.08);
+  border-radius: 8px 8px 0 0;
+  background: #eef0f1;
+  color: #6b7280;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+  transition: background 120ms ease, color 120ms ease, border-color 120ms ease;
+}
+
+.onyx-app-frame-v2 .onyx-donor-answer-surface-bookmark-tab + .onyx-donor-answer-surface-bookmark-tab {
+  margin-left: -1px;
+}
+
+.onyx-app-frame-v2 .onyx-donor-answer-surface-bookmark-tab:hover {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.onyx-app-frame-v2 .onyx-donor-answer-surface-bookmark-tab[data-state='active'] {
+  position: relative;
+  z-index: 2;
+  border-color: rgba(15, 23, 42, 0.1);
+  border-bottom-color: #ffffff;
+  background: #ffffff;
+  color: #111827;
+  box-shadow: 0 -1px 2px rgba(15, 23, 42, 0.03);
+}
+
 .onyx-app-frame-v2 .onyx-donor-answer-surface-meta {
   gap: 8px;
 }
@@ -2427,8 +2471,30 @@ textarea {
   background: rgba(8, 15, 28, 0.9);
 }
 
+.v2-analysis-result-shell {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  flex-direction: column;
+}
+
+.v2-analysis-result-shell > .onyx-donor-answer-surface-view-switch {
+  margin-left: 14px;
+  margin-bottom: -1px;
+  z-index: 1;
+}
+
+.onyx-app-frame-v2 .v2-analysis-result-shell > .onyx-native-donor-analysis-card-shell[data-variant='secondary'] {
+  border-color: rgba(15, 23, 42, 0.1);
+  background: #ffffff;
+}
+
 .v2-analysis-card-shell {
   display: grid;
+  gap: 14px;
+}
+
+.onyx-app-frame-v2 .v2-analysis-card-shell > .onyx-native-donor-card-section {
   gap: 14px;
 }
 
@@ -2440,6 +2506,7 @@ textarea {
 }
 
 .v2-analysis-card-copy {
+  min-width: 0;
   display: grid;
   gap: 6px;
 }
@@ -2465,6 +2532,13 @@ textarea {
   gap: 8px;
 }
 
+.v2-analysis-explorer-bar-start {
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
 .v2-analysis-card-summary,
 .v2-analysis-explorer-actions {
   display: flex;
@@ -2474,6 +2548,11 @@ textarea {
 
 .v2-analysis-explorer-actions {
   justify-content: flex-end;
+}
+
+.v2-analysis-explorer-shell {
+  min-width: 0;
+  overflow: hidden;
 }
 
 .chat-assistant-answer-surface {
@@ -2487,6 +2566,15 @@ textarea {
     radial-gradient(circle at top left, rgba(125, 211, 252, 0.08), transparent 28%),
     linear-gradient(180deg, rgba(9, 17, 30, 0.96), rgba(8, 15, 28, 0.98));
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.onyx-app-frame-v2 .onyx-donor-answer-surface-embedded {
+  margin-top: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
 }
 
 .chat-assistant-answer-surface-meta {
@@ -2543,7 +2631,7 @@ textarea {
 .chat-assistant-answer-surface-dialog {
   position: fixed;
   inset: 24px;
-  z-index: 50;
+  z-index: 1000;
   display: grid;
   align-content: start;
   gap: 14px;
@@ -2556,8 +2644,23 @@ textarea {
   box-shadow: 0 30px 80px rgba(1, 6, 16, 0.52);
 }
 
+.onyx-app-frame-v2 .chat-assistant-answer-surface-dialog {
+  left: 264px;
+  right: 312px;
+}
+
+.onyx-app-frame-v2.is-sidebar-collapsed .chat-assistant-answer-surface-dialog {
+  left: 96px;
+}
+
+.onyx-app-frame-v2.is-source-rail-hidden .chat-assistant-answer-surface-dialog {
+  right: 24px;
+}
+
 .chat-assistant-answer-surface-dialog-bar {
   display: flex;
+  align-items: center;
+  gap: 16px;
   justify-content: flex-end;
 }
 
@@ -2666,6 +2769,13 @@ textarea {
   overflow: auto;
 }
 
+.onyx-app-frame-v2 .chat-assistant-answer-chart,
+.onyx-app-frame-v2 .chat-assistant-answer-table-wrap {
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  border-radius: 12px;
+  background: #ffffff;
+}
+
 .chat-assistant-answer-table {
   width: 100%;
   border-collapse: collapse;
@@ -2682,6 +2792,21 @@ textarea {
 .chat-assistant-answer-table th {
   color: var(--muted);
   font-weight: 600;
+}
+
+.onyx-app-frame-v2 .chat-assistant-answer-table {
+  font-size: 0.875rem;
+}
+
+.onyx-app-frame-v2 .chat-assistant-answer-table th {
+  background: #f9fafb;
+  color: #6b7280;
+}
+
+.onyx-app-frame-v2 .chat-assistant-answer-table th,
+.onyx-app-frame-v2 .chat-assistant-answer-table td {
+  border-bottom-color: rgba(15, 23, 42, 0.08);
+  color: #374151;
 }
 
 .chat-assistant-answer-empty {
@@ -3204,6 +3329,10 @@ textarea {
 
   .v2-live-message-assistant {
     grid-template-columns: 1fr;
+  }
+
+  .onyx-app-frame-v2 .chat-assistant-answer-surface-dialog {
+    inset: 12px;
   }
 
   .v2-message-user,

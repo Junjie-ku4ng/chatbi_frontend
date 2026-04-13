@@ -114,6 +114,57 @@ describe('ask donor message adapter v2', () => {
     ])
   })
 
+  it('merges adjacent chart and table components from the same query into one switchable analysis card', () => {
+    const presentation = buildDonorMessagePresentationV2([
+      {
+        key: 'chart-1',
+        kind: 'analysis_component',
+        component: {
+          type: 'chart',
+          payload: {
+            queryLogId: 'query-log-1',
+            traceKey: 'trace-1',
+            option: {
+              xAxis: { type: 'category', data: ['Jan'] },
+              yAxis: { type: 'value' },
+              series: [{ type: 'line', data: [120] }]
+            }
+          }
+        },
+        timelineOrder: 1
+      },
+      {
+        key: 'table-1',
+        kind: 'analysis_component',
+        component: {
+          type: 'table',
+          payload: {
+            queryLogId: 'query-log-1',
+            traceKey: 'trace-1',
+            columns: ['Month', 'Revenue'],
+            rows: [{ Month: 'Jan', Revenue: 120 }]
+          }
+        },
+        timelineOrder: 2
+      }
+    ])
+
+    expect(presentation.finalAnswerSections).toHaveLength(1)
+    expect(presentation.finalAnswerSections[0]?.sectionKind).toBe('analysis')
+    expect(presentation.finalAnswerSections[0]?.item.kind).toBe('analysis_component')
+    if (presentation.finalAnswerSections[0]?.item.kind !== 'analysis_component') {
+      throw new Error('expected merged analysis component')
+    }
+
+    const merged = presentation.finalAnswerSections[0].item.component
+    expect(merged.type).toBe('chart')
+    expect(merged.payload.option).toBeTruthy()
+    expect(merged.payload.rows).toEqual([{ Month: 'Jan', Revenue: 120 }])
+    expect(merged.payload.columns).toEqual(['Month', 'Revenue'])
+    expect(merged.payload.interaction?.availableViews).toEqual(['chart', 'table'])
+    expect(merged.payload.interaction?.defaultView).toBe('chart')
+  })
+
   it('coalesces adjacent streamed assistant text chunks into a single markdown section', () => {
     const presentation = buildDonorMessagePresentationV2([
       {

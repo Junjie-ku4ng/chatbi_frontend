@@ -20,11 +20,18 @@ function readSearchParam(input: SearchParams, key: string) {
   return undefined
 }
 
+function readNumberSearchParam(input: SearchParams, key: string) {
+  const value = Number(readSearchParam(input, key))
+  return Number.isFinite(value) ? value : undefined
+}
+
 export function AskWorkspaceV2({ searchParams }: AskWorkspaceV2Props) {
   const shell = frontendPlatformAdapter.ask.resolveShellContract()
   const activeXpertId = resolveAskHarnessXpertId(readSearchParam(searchParams, 'xpertId'))
   const modelId = readSearchParam(searchParams, 'modelId')
   const initialConversationId = readSearchParam(searchParams, 'conversationId')
+  const mockChatScenario = readSearchParam(searchParams, 'mockChatScenario')
+  const mockChatLatencyMs = readNumberSearchParam(searchParams, 'mockChatLatencyMs')
   const handoff = {
     queryLogId: readSearchParam(searchParams, 'queryLogId'),
     traceKey: readSearchParam(searchParams, 'traceKey'),
@@ -39,6 +46,8 @@ export function AskWorkspaceV2({ searchParams }: AskWorkspaceV2Props) {
         initialConversationId={initialConversationId}
         handoff={handoff}
         modelId={modelId}
+        mockChatScenario={mockChatScenario}
+        mockChatLatencyMs={mockChatLatencyMs}
         shellAnchors={{
           askThreadStage: shell.anchors.askThreadStage,
           askDiagnosticsDrawer: shell.anchors.askDiagnosticsDrawer,
