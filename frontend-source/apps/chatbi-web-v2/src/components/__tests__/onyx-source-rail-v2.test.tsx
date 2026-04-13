@@ -115,6 +115,8 @@ describe('OnyxSourceRailV2', () => {
     expect(railStack?.className).toContain('onyx-native-donor-source-rail-stack')
     expect(headerTitle?.className).toContain('onyx-native-donor-source-rail-title')
     expect(headerArrow?.className).toContain('onyx-native-donor-source-rail-arrow')
+    expect(headerTitle?.textContent).toBe('回答来源')
+    expect(headerArrow?.getAttribute('aria-label')).toBe('隐藏回答来源')
     expect(list?.className).toContain('onyx-donor-source-rail-list')
     expect(firstCard?.className).toContain('onyx-donor-source-card')
     expect(firstCard?.className).toContain('onyx-native-donor-document-card')
@@ -183,5 +185,21 @@ describe('OnyxSourceRailV2', () => {
     expect(container.querySelector('[data-testid="onyx-source-rail-card"]')?.className).toContain('onyx-donor-source-card')
     expect(container.querySelector('[data-testid="onyx-source-rail-card"]')?.className).toContain('onyx-native-donor-document-card')
     expect(container.querySelector('[data-testid="onyx-native-donor-card"]')?.className).toContain('onyx-native-donor-card')
+  })
+
+  it('closes the answer source rail from the header action', async () => {
+    useChatSourceRailStore.setState({ isRailOpen: true })
+
+    const container = await renderRail()
+    const closeButton = container.querySelector('[aria-label="隐藏回答来源"]')
+
+    expect(useChatSourceRailStore.getState().isRailOpen).toBe(true)
+
+    await act(async () => {
+      closeButton?.dispatchEvent(new MouseEvent('click', { bubbles: true }))
+      await Promise.resolve()
+    })
+
+    expect(useChatSourceRailStore.getState().isRailOpen).toBe(false)
   })
 })

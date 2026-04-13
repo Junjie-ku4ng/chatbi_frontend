@@ -359,9 +359,11 @@ textarea {
 }
 
 .onyx-app-frame-v2 {
-  min-height: 100vh;
+  height: 100dvh;
+  min-height: 0;
   display: grid;
   grid-template-columns: 240px minmax(0, 1fr) 288px;
+  overflow: hidden;
   background: #f7f7f5;
   color: #1f2937;
   transition: grid-template-columns 180ms ease;
@@ -369,6 +371,14 @@ textarea {
 
 .onyx-app-frame-v2.is-sidebar-collapsed {
   grid-template-columns: 72px minmax(0, 1fr) 288px;
+}
+
+.onyx-app-frame-v2.is-source-rail-hidden {
+  grid-template-columns: 240px minmax(0, 1fr);
+}
+
+.onyx-app-frame-v2.is-sidebar-collapsed.is-source-rail-hidden {
+  grid-template-columns: 72px minmax(0, 1fr);
 }
 
 .onyx-app-frame-v2-main {
@@ -379,19 +389,39 @@ textarea {
 }
 
 .onyx-source-rail-v2 {
-  min-height: 100vh;
-  padding: 18px 16px;
-  background: #f3f2ef;
+  height: 100dvh;
+  min-height: 0;
+  padding: 22px 16px 16px;
+  border-left: 1px solid rgba(15, 23, 42, 0.05);
+  background: #f0f1f1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior: contain;
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(107, 114, 128, 0.35) transparent;
+}
+
+.onyx-source-rail-v2::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.onyx-source-rail-v2::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(107, 114, 128, 0.35);
 }
 
 .onyx-sidebar-v2 {
   display: grid;
   grid-template-rows: auto auto minmax(0, 1fr) auto;
   gap: 24px;
-  min-height: 100vh;
+  height: 100dvh;
+  min-height: 0;
   padding: 22px 16px 16px;
   border-right: 1px solid rgba(15, 23, 42, 0.05);
   background: #f0f1f1;
+  overflow: hidden;
   transition: padding 180ms ease;
 }
 
@@ -445,7 +475,7 @@ textarea {
 }
 
 .onyx-sidebar-v2 .chatbi-logo-wordmark-v2 {
-  font-size: 1.64rem;
+  font-size: 1.42rem;
   font-weight: 700;
 }
 
@@ -499,7 +529,7 @@ textarea {
 
 .onyx-sidebar-v2-action {
   width: 100%;
-  min-height: 44px;
+  min-height: 42px;
   display: flex;
   align-items: center;
   gap: 12px;
@@ -507,9 +537,9 @@ textarea {
   border: 0;
   border-radius: 8px;
   background: transparent;
-  color: #7c7f82;
+  color: #62666b;
   cursor: pointer;
-  font-size: 1.04rem;
+  font-size: 0.96rem;
   font-weight: 700;
   letter-spacing: 0;
   text-align: left;
@@ -522,7 +552,7 @@ textarea {
 }
 
 .onyx-sidebar-v2-action.is-primary {
-  min-height: 54px;
+  min-height: 50px;
   background: #ffffff;
   color: #3f4349;
   box-shadow: 0 1px 2px rgba(15, 23, 42, 0.04);
@@ -535,7 +565,7 @@ textarea {
   align-items: center;
   justify-content: center;
   flex: 0 0 auto;
-  color: #8b8e91;
+  color: #7f8388;
 }
 
 .onyx-sidebar-v2-action-label {
@@ -548,7 +578,7 @@ textarea {
 .onyx-donor-source-rail {
   display: grid;
   align-content: start;
-  gap: 14px;
+  gap: 24px;
 }
 
 .onyx-sidebar-v2-nav-item,
@@ -572,26 +602,34 @@ textarea {
 .onyx-sidebar-v2-scroll {
   min-height: 0;
   overflow: auto;
+  overscroll-behavior: contain;
   display: grid;
   align-content: start;
-  gap: 30px;
-  padding-right: 2px;
+  gap: 32px;
+  padding-right: 4px;
+  scrollbar-gutter: stable;
 }
 
 .onyx-donor-sidebar-scroll {
-  scrollbar-width: none;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(107, 114, 128, 0.35) transparent;
 }
 
 .onyx-donor-sidebar-scroll::-webkit-scrollbar {
-  width: 0;
-  height: 0;
+  width: 6px;
+  height: 6px;
+}
+
+.onyx-donor-sidebar-scroll::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: rgba(107, 114, 128, 0.35);
 }
 
 .onyx-sidebar-v2-section {
   min-height: 0;
   display: grid;
   align-content: start;
-  gap: 14px;
+  gap: 10px;
 }
 
 .onyx-donor-sidebar-section {
@@ -607,16 +645,31 @@ textarea {
 }
 
 .onyx-sidebar-v2-section-title {
+  min-height: 22px;
   padding: 0 20px;
-  color: #7f8285;
-  font-size: 1rem;
-  font-weight: 500;
+  color: #969a9e;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
   line-height: 1.2;
 }
 
 .onyx-donor-agent-list,
 .onyx-donor-project-list {
   align-content: start;
+}
+
+.onyx-sidebar-v2-section .onyx-sidebar-v2-action {
+  color: #676b70;
+}
+
+.onyx-sidebar-v2-section .onyx-sidebar-v2-action-label {
+  font-size: 0.96rem;
+  font-weight: 700;
+}
+
+.onyx-sidebar-v2-section .onyx-sidebar-v2-action-icon {
+  color: #92969a;
 }
 
 .onyx-sidebar-v2 .onyx-donor-session-list {
@@ -703,7 +756,7 @@ textarea {
 }
 
 .onyx-sidebar-v2-account-label {
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 500;
 }
 
@@ -711,12 +764,15 @@ textarea {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 0.9rem;
-  font-weight: 600;
+  min-height: 32px;
+  padding: 0 4px;
+  color: #62666b;
+  font-size: 0.96rem;
+  font-weight: 700;
 }
 
 .onyx-donor-source-rail-header {
-  letter-spacing: 0.01em;
+  letter-spacing: 0;
 }
 
 .onyx-source-rail-v2-arrow {
@@ -773,10 +829,10 @@ textarea {
 
 .onyx-source-rail-v2-card {
   display: grid;
-  gap: 2px;
-  padding: 9px 11px;
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  border-radius: 14px;
+  gap: 4px;
+  padding: 10px 12px;
+  border: 1px solid rgba(15, 23, 42, 0.06);
+  border-radius: 8px;
   background: #ffffff;
 }
 
@@ -2702,6 +2758,22 @@ textarea {
   align-items: flex-start;
 }
 
+.onyx-source-rail-v2 > .onyx-native-donor-source-rail-card.onyx-native-donor-card,
+.onyx-source-rail-v2 > .onyx-native-donor-source-rail-card.onyx-native-donor-card-secondary,
+.onyx-source-rail-v2 > .onyx-native-donor-source-rail-card[data-variant='secondary'] {
+  overflow: visible;
+  border-color: transparent;
+  border-radius: 0;
+  background: transparent;
+  box-shadow: none;
+}
+
+.onyx-source-rail-v2 > .onyx-native-donor-source-rail-card > .onyx-native-donor-card-section {
+  gap: 0;
+  padding: 0;
+  background: transparent;
+}
+
 .onyx-native-donor-document-card,
 .onyx-native-donor-clarification-card {
   width: 100%;
@@ -2822,22 +2894,36 @@ textarea {
 }
 
 .onyx-native-donor-source-rail-stack {
-  display: flex;
+  display: grid;
   width: 100%;
-  flex-direction: column;
-  gap: 0.75rem;
+  gap: 14px;
 }
 
 .onyx-native-donor-source-rail-title {
-  color: #111827;
-  font-size: 0.9375rem;
-  font-weight: 600;
+  color: #62666b;
+  font-size: 0.96rem;
+  font-weight: 700;
 }
 
 .onyx-native-donor-source-rail-arrow {
   display: inline-flex;
   align-items: center;
-  color: #6b7280;
+  color: #8b8e91;
+}
+
+.onyx-source-rail-v2-close {
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: pointer;
+}
+
+.onyx-source-rail-v2-close:hover {
+  background: rgba(255, 255, 255, 0.72);
+  color: #4b4f54;
 }
 
 .onyx-native-donor-runtime-stack {
@@ -2913,12 +2999,13 @@ textarea {
 }
 
 .onyx-app-frame-v2-main {
-  height: 100vh;
+  height: 100%;
   overflow: hidden;
 }
 
 .onyx-chat-page-v2 {
   height: 100%;
+  overflow: hidden;
   grid-template-rows: auto minmax(0, 1fr);
 }
 
@@ -2936,6 +3023,7 @@ textarea {
 }
 
 .onyx-chat-page-v2-body {
+  height: 100%;
   overflow: hidden;
 }
 

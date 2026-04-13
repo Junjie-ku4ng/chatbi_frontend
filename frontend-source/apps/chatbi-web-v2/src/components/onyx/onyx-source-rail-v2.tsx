@@ -62,6 +62,7 @@ function SourceRailIcon({ kind }: { kind?: SourceRailItem['kind'] }) {
 export function OnyxSourceRailV2({ items }: { items: SourceRailItem[] }) {
   const lastDone = useChatRuntimeStore(state => state.lastDone)
   const selectedMessageSources = useChatSourceRailStore(state => state.selectedMessageSources)
+  const closeRail = useChatSourceRailStore(state => state.closeRail)
   const runtimeItems = useMemo(() => deriveChatSourceItems(lastDone), [lastDone])
   const visibleItems = selectedMessageSources.length > 0 ? selectedMessageSources : runtimeItems.length > 0 ? runtimeItems : items
 
@@ -76,11 +77,17 @@ export function OnyxSourceRailV2({ items }: { items: SourceRailItem[] }) {
         <div className="onyx-native-donor-source-rail-stack" data-testid="onyx-native-donor-source-rail-stack">
           <div className="onyx-source-rail-v2-header onyx-donor-source-rail-header" data-testid="onyx-donor-source-rail-header">
             <span className="onyx-native-donor-source-rail-title" data-testid="onyx-native-donor-source-rail-title">
-              全部来源
+              回答来源
             </span>
-            <span className="onyx-native-donor-source-rail-arrow" data-testid="onyx-native-donor-source-rail-arrow">
+            <button
+              aria-label="隐藏回答来源"
+              className="onyx-native-donor-source-rail-arrow onyx-source-rail-v2-close"
+              data-testid="onyx-native-donor-source-rail-arrow"
+              onClick={closeRail}
+              type="button"
+            >
               <SvgArrowRightV2 className="h-4 w-4" />
-            </span>
+            </button>
           </div>
           <div className="onyx-source-rail-v2-list onyx-donor-source-rail-list" data-testid="onyx-donor-source-rail-list">
             {visibleItems.length > 0 ? (

@@ -26,6 +26,7 @@ export function AskMessageFeedbackV2({
 }: AskMessageFeedbackV2Props) {
   const [feedback, setFeedback] = useState<MessageFeedback | null>(null)
   const [pending, setPending] = useState(false)
+  const isSourceRailOpen = useChatSourceRailStore(state => state.isRailOpen)
   const selectedMessageId = useChatSourceRailStore(state => state.selectedMessageId)
   const toggleMessageSources = useChatSourceRailStore(state => state.toggleMessageSources)
 
@@ -52,7 +53,7 @@ export function AskMessageFeedbackV2({
     return null
   }
 
-  const isSourceSelected = sources.length > 0 && selectedMessageId === messageId
+  const isSourceSelected = sources.length > 0 && isSourceRailOpen && selectedMessageId === messageId
 
   async function toggleRating(nextRating: MessageFeedbackRating) {
     if (pending || !conversationId || !messageId) {
@@ -142,7 +143,7 @@ export function AskMessageFeedbackV2({
       {sources.length > 0 ? (
         <div data-testid="onyx-donor-toolbar-sources">
           <OnyxSelectButtonV2
-            aria-label="来源"
+            aria-label="回答来源"
             onClick={() => {
               toggleMessageSources({
                 messageId,
@@ -153,7 +154,7 @@ export function AskMessageFeedbackV2({
             state={isSourceSelected ? 'selected' : 'empty'}
             variant="select-light"
           >
-            来源
+            回答来源
           </OnyxSelectButtonV2>
         </div>
       ) : null}

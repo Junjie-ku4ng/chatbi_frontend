@@ -398,7 +398,7 @@ function AskRuntimeShellSessionV2({
                                   <strong>嵌入图表、KPI 和表格回答：</strong>直接呈现在助手消息中。
                                 </li>
                                 <li>
-                                  <strong>保留追踪和来源上下文：</strong>在右侧来源栏持续可见。
+                                  <strong>保留追踪和来源上下文：</strong>点击回答来源后在右侧来源栏查看。
                                 </li>
                               </ul>
                             </div>
@@ -416,7 +416,7 @@ function AskRuntimeShellSessionV2({
                                   state="selected"
                                   variant="select-light"
                                 >
-                                  全部来源
+                                  回答来源
                                 </OnyxSelectButtonV2>
                               </div>
                             </div>

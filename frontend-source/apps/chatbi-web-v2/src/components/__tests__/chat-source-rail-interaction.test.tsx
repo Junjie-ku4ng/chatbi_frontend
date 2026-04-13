@@ -7,7 +7,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import { AskMessageFeedbackV2 } from '../ask-message-feedback-v2'
 import { OnyxSourceRailV2 } from '../onyx/onyx-source-rail-v2'
 import { resetChatRuntimeStore } from '@/modules/chat/runtime/chat-runtime-store'
-import { resetChatSourceRailStore } from '@/modules/chat/runtime/chat-source-rail-store'
+import { resetChatSourceRailStore, useChatSourceRailStore } from '@/modules/chat/runtime/chat-source-rail-store'
 
 const { createMessageFeedbackMock, deleteMessageFeedbackMock, getMessageFeedbackMock } = vi.hoisted(() => ({
   createMessageFeedbackMock: vi.fn(),
@@ -90,11 +90,12 @@ describe('chat source rail interaction', () => {
     getMessageFeedbackMock.mockResolvedValue(null)
 
     const container = await renderInteractionSurface()
-    const sourceButton = Array.from(container.querySelectorAll('button')).find(button => button.textContent?.trim() === '来源')
+    const sourceButton = Array.from(container.querySelectorAll('button')).find(button => button.textContent?.trim() === '回答来源')
     const sourceRail = container.querySelector('[data-testid="onyx-donor-source-rail"]')
 
     expect(sourceButton).toBeTruthy()
     expect(sourceRail?.className).toContain('onyx-donor-source-rail')
+    expect(useChatSourceRailStore.getState().isRailOpen).toBe(false)
     expect(container.textContent).toContain('会话记录')
     expect(container.textContent).not.toContain('查询日志引用')
 
@@ -104,6 +105,7 @@ describe('chat source rail interaction', () => {
     })
 
     expect(sourceButton?.getAttribute('data-interactive-state')).toBe('selected')
+    expect(useChatSourceRailStore.getState().isRailOpen).toBe(true)
     expect(container.textContent).toContain('查询日志引用')
     expect(container.textContent).not.toContain('会话记录')
     expect(container.querySelector('[data-testid="onyx-source-rail-card"]')?.className).toContain('onyx-donor-source-card')
@@ -114,6 +116,7 @@ describe('chat source rail interaction', () => {
     })
 
     expect(sourceButton?.getAttribute('data-interactive-state')).toBe('empty')
+    expect(useChatSourceRailStore.getState().isRailOpen).toBe(false)
     expect(container.textContent).toContain('会话记录')
   })
 })

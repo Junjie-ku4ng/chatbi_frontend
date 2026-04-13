@@ -5,6 +5,7 @@ import { act } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { AskMessageFeedbackV2 } from '../ask-message-feedback-v2'
+import { resetChatSourceRailStore } from '@/modules/chat/runtime/chat-source-rail-store'
 
 const { createMessageFeedbackMock, deleteMessageFeedbackMock, getMessageFeedbackMock } = vi.hoisted(() => ({
   createMessageFeedbackMock: vi.fn(),
@@ -42,6 +43,7 @@ afterEach(() => {
   }
   vi.clearAllMocks()
   copyDonorAnswerMock.mockReset()
+  resetChatSourceRailStore()
 })
 
 async function renderFeedback(
@@ -114,7 +116,7 @@ describe('AskMessageFeedbackV2', () => {
     expect(container.querySelector('[data-testid="AgentMessage/like-button"]')).not.toBeNull()
     expect(container.querySelector('[data-testid="AgentMessage/dislike-button"]')).not.toBeNull()
     expect(container.querySelector('[data-testid="AgentMessage/regenerate"]')).not.toBeNull()
-    expect(Array.from(container.querySelectorAll('button')).some(button => button.textContent?.trim() === '来源')).toBe(false)
+    expect(Array.from(container.querySelectorAll('button')).some(button => button.textContent?.trim() === '回答来源')).toBe(false)
   })
 
   it('renders the donor-style source affordance when the message has real sources', async () => {
@@ -133,7 +135,7 @@ describe('AskMessageFeedbackV2', () => {
     })
 
     expect(container.querySelector('[data-testid="onyx-donor-toolbar-sources"]')).not.toBeNull()
-    expect(Array.from(container.querySelectorAll('button')).some(button => button.textContent?.trim() === '来源')).toBe(true)
+    expect(Array.from(container.querySelectorAll('button')).some(button => button.textContent?.trim() === '回答来源')).toBe(true)
   })
 
   it('copies the final answer text through the donor toolbar copy action', async () => {

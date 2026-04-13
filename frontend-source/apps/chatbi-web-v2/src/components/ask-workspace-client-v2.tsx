@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from 'react'
 import { frontendPlatformAdapter } from '@/lib/platform-adapter-bridge'
+import { useChatSourceRailStore } from '@/modules/chat/runtime/chat-source-rail-store'
 import { OnyxAppFrameV2 } from './onyx/onyx-app-frame-v2'
 import { OnyxChatPageV2 } from './onyx/onyx-chat-page-v2'
 import { OnyxSidebarV2 } from './onyx/onyx-sidebar-v2'
@@ -123,6 +124,7 @@ export function AskWorkspaceClientV2({
 }: AskWorkspaceClientV2Props) {
   const [conversationId, setConversationId] = useState<string | undefined>(initialConversationId)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const sourceRailOpen = useChatSourceRailStore(state => state.isRailOpen)
 
   const railItems = useMemo(
     () =>
@@ -140,6 +142,7 @@ export function AskWorkspaceClientV2({
   return (
     <OnyxAppFrameV2
       sidebarCollapsed={sidebarCollapsed}
+      sourceRailOpen={sourceRailOpen}
       sidebar={
         <OnyxSidebarV2
           key={sidebarRenderKey}

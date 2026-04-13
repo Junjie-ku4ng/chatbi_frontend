@@ -5,8 +5,10 @@ import { act } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import { afterEach, describe, expect, it, vi } from 'vitest'
 import { AskWorkspaceClientV2 } from '../ask-workspace-client-v2'
+import { resetChatSourceRailStore, useChatSourceRailStore } from '@/modules/chat/runtime/chat-source-rail-store'
 
-const { sidebarPropsMock, chatPagePropsMock, sourceRailPropsMock } = vi.hoisted(() => ({
+const { framePropsMock, sidebarPropsMock, chatPagePropsMock, sourceRailPropsMock } = vi.hoisted(() => ({
+  framePropsMock: vi.fn(),
   sidebarPropsMock: vi.fn(),
   chatPagePropsMock: vi.fn(),
   sourceRailPropsMock: vi.fn()
@@ -16,13 +18,26 @@ vi.mock('../onyx/onyx-app-frame-v2', () => ({
   OnyxAppFrameV2: ({
     sidebar,
     main,
-    rail
+    rail,
+    sourceRailOpen
   }: {
     sidebar: React.ReactNode
     main: React.ReactNode
-    rail: React.ReactNode
-  }) =>
-    React.createElement('div', { 'data-testid': 'ask-workspace-frame-v2' }, sidebar, main, rail)
+    rail?: React.ReactNode
+    sourceRailOpen?: boolean
+  }) => {
+    framePropsMock({ sourceRailOpen })
+    return React.createElement(
+      'div',
+      {
+        'data-testid': 'ask-workspace-frame-v2',
+        'data-source-rail-open': sourceRailOpen ? 'true' : 'false'
+      },
+      sidebar,
+      main,
+      sourceRailOpen ? rail : null
+    )
+  }
 }))
 
 vi.mock('../onyx/onyx-sidebar-v2', () => ({
@@ -117,9 +132,14 @@ afterEach(() => {
     mounted.container.remove()
   }
   vi.clearAllMocks()
+  resetChatSourceRailStore()
 })
 
-async function renderWorkspace() {
+async function renderWorkspace({ sourceRailOpen = false }: { sourceRailOpen?: boolean } = {}) {
+  if (sourceRailOpen) {
+    useChatSourceRailStore.setState({ isRailOpen: true })
+  }
+
   const container = document.createElement('div')
   document.body.appendChild(container)
   const root = createRoot(container)
@@ -149,8 +169,16 @@ async function renderWorkspace() {
 }
 
 describe('AskWorkspaceClientV2', () => {
-  it('propagates the live conversationId to the sidebar and source rail after a new conversation starts', async () => {
+  it('hides the answer source rail until the source rail store opens it', async () => {
     const { container } = await renderWorkspace()
+
+    expect(framePropsMock).toHaveBeenLastCalledWith({ sourceRailOpen: false })
+    expect(container.querySelector('[data-testid="workspace-source-rail"]')).toBeNull()
+    expect(sourceRailPropsMock).not.toHaveBeenCalled()
+  })
+
+  it('propagates the live conversationId to the sidebar and source rail after a new conversation starts', async () => {
+    const { container } = await renderWorkspace({ sourceRailOpen: true })
 
     expect(sidebarPropsMock).toHaveBeenLastCalledWith(
       expect.objectContaining({
@@ -164,6 +192,7 @@ describe('AskWorkspaceClientV2', () => {
         ])
       })
     )
+    expect(container.querySelector('[data-testid="workspace-source-rail"]')).not.toBeNull()
 
     const button = container.querySelector('[data-testid="workspace-chat-page"]')
     expect(button).toBeTruthy()
